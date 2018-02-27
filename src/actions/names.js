@@ -1,0 +1,3 @@
+export const TOGGLE_LOGIN = 'TOGGLE_LOGIN'
+export const SET_USER_NAME = 'SET_USER_NAME'
+export const SET_USER_IMG_PATH = 'SET_USER_IMG_PATH'
