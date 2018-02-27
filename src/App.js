@@ -3,15 +3,12 @@ import 'typeface-roboto'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
-import NavBarC from './containers/NavBarC'
+import NavBar from './containers/NavBar'
 import Reducer from './reducers'
 import { Router, Route } from 'react-router'
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux'
 import thunk from 'redux-thunk'
 import createBrowserHistory from 'history/createBrowserHistory'
-import ab_test from './autobahn_test'
-
-ab_test()
 
 const theme = createMuiTheme({
     palette: {
@@ -33,7 +30,6 @@ const middleware = routerMiddleware(browserHistory)
 
 const store = createStore(
     Reducer,
-    // TODO: remove for production
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
     applyMiddleware(middleware),
     applyMiddleware(thunk),
@@ -52,7 +48,7 @@ class App extends Component {
                 <MuiThemeProvider theme={theme}>
                     <Router history={history}>
                         <Route path="/">
-                            <NavBarC/>
+                            <NavBar/>
                         </Route>
                     </Router>
                 </MuiThemeProvider>

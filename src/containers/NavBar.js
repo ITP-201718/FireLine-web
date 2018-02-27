@@ -3,7 +3,7 @@ import {
     toggleLogin,
     setUserName,
 } from '../actions/login';
-import NavBar from '../components/NavBar'
+import NavBar from '../components/NavBar/NavBar'
 
 const mapStateToProps = state => {
     state = state.get('login');

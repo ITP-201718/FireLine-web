@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from 'material-ui/styles'
 import AppBar from 'material-ui/AppBar'
@@ -7,8 +7,7 @@ import IconButton from 'material-ui/IconButton'
 import MenuIcon from 'material-ui-icons/Menu'
 import Typography from 'material-ui/Typography'
 import Button from 'material-ui/Button'
-import AccountCircle from 'material-ui-icons/AccountCircle';
-import Menu, { MenuItem } from 'material-ui/Menu'
+import ProfileMenu from './ProfileMenu';
 
 const styles = {
     root: {
@@ -35,14 +34,7 @@ const NavBar = ({ classes, loggedIn, userName, toggleLogin }) => (
                 </Typography>
                 {
                     loggedIn ?
-                        <div>
-                            <IconButton>
-                                <AccountCircle/>
-                            </IconButton>
-                            <Menu open={true}>
-                                <MenuItem>{userName ? userName : 'No Username'}</MenuItem>
-                            </Menu>
-                        </div>:
+                        <ProfileMenu userImgPath='user.png' /> :
                         <Button color='inherit' onClick={toggleLogin}>{loggedIn ? 'Logout' : 'Login'}</Button>
                 }
             </Toolbar>
