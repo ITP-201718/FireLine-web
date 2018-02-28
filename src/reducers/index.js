@@ -1,10 +1,13 @@
 import { combineReducers } from 'redux-immutable'
-import login from './login'
+
+import mainWrapper from './mainWrapper'
 import routing from './routing'
+import profile from './profile'
 
-const reducers = combineReducers({
-    login,
-    routing
-});
+const Reducer = combineReducers({
+    mainWrapper,
+    routing,
+    profile,
+})
 
-export default reducers
+export default Reducer
