@@ -60,8 +60,8 @@ class ProfileMenu extends React.Component {
                 }}
                 onClose={this.closeMenu}
             >
-                <MenuItem onClick={() => push('/')}>Main</MenuItem>
-                <MenuItem onClick={() => push('/account')}>My Account</MenuItem>
+                <MenuItem onClick={() => {this.closeMenu(); push('/')}}>Main</MenuItem>
+                <MenuItem onClick={() => {this.closeMenu(); push('/account')}}>My Account</MenuItem>
                 <MenuItem onClick={this.logout}>Logout</MenuItem>
             </Menu>
         </div>)
