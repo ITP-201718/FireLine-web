@@ -4,8 +4,9 @@ import { setUserMail } from '../../actions/profile';
 
 const mapStateToProps = (main_state) => {
     let state = main_state.get('profile')
+    let mail = state.get('mail')
     return {
-        userMail: state.get('mail'),
+        userMail: mail ? mail : "",
     }
 }
 

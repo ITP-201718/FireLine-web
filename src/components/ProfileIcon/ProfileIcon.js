@@ -27,7 +27,8 @@ class ProfileMenu extends React.Component {
     }
 
     logout = () => {
-        const { setLoggedIn } = this.props
+        const { setLoggedIn, push } = this.props
+        push('/')
         setLoggedIn(false)
         this.closeMenu()
     }
@@ -59,8 +60,8 @@ class ProfileMenu extends React.Component {
                 }}
                 onClose={this.closeMenu}
             >
-                <MenuItem onClick={() => push('/account')}>My Account</MenuItem>
                 <MenuItem onClick={() => push('/')}>Main</MenuItem>
+                <MenuItem onClick={() => push('/account')}>My Account</MenuItem>
                 <MenuItem onClick={this.logout}>Logout</MenuItem>
             </Menu>
         </div>)

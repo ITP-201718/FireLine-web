@@ -23,7 +23,7 @@ class Account extends React.Component {
         return (
             <div className={classes.root}>
                 <Grid container spacing={24} justify='center'>
-                    <Grid item xs={4}>
+                    <Grid item xs={12} sm={10} md={8} lg={6}>
                         <TextField
                             label="E-Mail"
                             margin="normal"
