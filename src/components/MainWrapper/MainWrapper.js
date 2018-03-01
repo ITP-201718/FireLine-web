@@ -15,8 +15,15 @@ import ProfileButton from '../ProfileButton';
 const drawerWidth = 240;
 
 const styles = theme => ({
+    rootWrapper: {
+        display: 'flex',
+        minHeight: '100vh',
+        flexDirection: 'column'
+    },
     root: {
         flexGrow: 1,
+        flexShrink: 0,
+        flexBasic: 'auto',
         height: 430,
         zIndex: 1,
         overflow: 'hidden',
@@ -60,8 +67,6 @@ const styles = theme => ({
 
 class MainWrapper extends React.Component {
 
-
-
     render() {
         const { classes, drawerOpen, setDrawerOpen, children } = this.props
 
@@ -84,54 +89,56 @@ class MainWrapper extends React.Component {
         )
 
         return (
-            <div className={classes.root}>
-                <AppBar className={classes.appBar}>
-                    <Toolbar>
-                        <IconButton
-                            color='inherit'
-                            aria-label="open drawer"
-                            onClick={() => {setDrawerOpen(true)}}
-                            className={classes.navIconHide}
+            <div className={classes.rootWrapper}>
+                <div className={classes.root}>
+                    <AppBar className={classes.appBar}>
+                        <Toolbar>
+                            <IconButton
+                                color='inherit'
+                                aria-label="open drawer"
+                                onClick={() => {setDrawerOpen(true)}}
+                                className={classes.navIconHide}
+                            >
+                                <MenuIcon/>
+                            </IconButton>
+                            <Typography variant="title" color="inherit" noWrap className={classes.flex}>
+                                FireLine
+                            </Typography>
+                            <ProfileButton/>
+                        </Toolbar>
+                    </AppBar>
+                    <Hidden mdUp>
+                        <Drawer
+                            variant="temporary"
+                            anchor="left"
+                            open={drawerOpen}
+                            onClose={() => {setDrawerOpen(false)}}
+                            classes={{
+                                paper: classes.drawerPaper,
+                            }}
+                            ModalProps={{
+                                keepMounted: true, // Better open performance on mobile
+                            }}
                         >
-                            <MenuIcon/>
-                        </IconButton>
-                        <Typography variant="title" color="inherit" noWrap className={classes.flex}>
-                            FireLine
-                        </Typography>
-                        <ProfileButton/>
-                    </Toolbar>
-                </AppBar>
-                <Hidden mdUp>
-                    <Drawer
-                        variant="temporary"
-                        anchor="left"
-                        open={drawerOpen}
-                        onClose={() => {setDrawerOpen(false)}}
-                        classes={{
-                            paper: classes.drawerPaper,
-                        }}
-                        ModalProps={{
-                            keepMounted: true, // Better open performance on mobile
-                        }}
-                    >
-                        {drawer}
-                    </Drawer>
-                </Hidden>
-                <Hidden smDown implementation="css">
-                    <Drawer
-                        variant="permanent"
-                        open
-                        classes={{
-                            paper: classes.drawerPaper
-                        }}
-                    >
-                        {drawer}
-                    </Drawer>
-                </Hidden>
-                <main className={classes.content}>
-                    <div className={classes.toolbar } />
-                    {children}
-                </main>
+                            {drawer}
+                        </Drawer>
+                    </Hidden>
+                    <Hidden smDown implementation="css">
+                        <Drawer
+                            variant="permanent"
+                            open
+                            classes={{
+                                paper: classes.drawerPaper
+                            }}
+                        >
+                            {drawer}
+                        </Drawer>
+                    </Hidden>
+                    <main className={classes.content}>
+                        <div className={classes.toolbar } />
+                        {children}
+                    </main>
+                </div>
             </div>
         )
     }
