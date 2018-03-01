@@ -3,7 +3,7 @@ import ProfileButton_c from './ProfileButton'
 import {
     setLoggedIn,
     setUserName,
-    setUserImgPath,
+    setUserMail,
 } from '../../actions/profile';
 
 const mapStateToProps = (main_state) => {
@@ -18,7 +18,7 @@ const mapDispatchToProps = dispatch => {
         setLoggedIn: (loggedIn) => {
             if(!!loggedIn) {
                 dispatch(setUserName('David'))
-                dispatch(setUserImgPath('/user.jpg'))
+                dispatch(setUserMail('david@langheiter.com'))
             }
             dispatch(setLoggedIn(loggedIn))
         }

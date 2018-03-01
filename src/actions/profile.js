@@ -1,7 +1,7 @@
 import {
     SET_LOGGED_IN,
     SET_USER_NAME,
-    SET_USER_IMG_PATH,
+    SET_USER_MAIL,
     SET_NAVBAR_MENU_OPEN,
     SET_NAVBAR_MENU_ANCHOR_EL,
 } from './names'
@@ -20,10 +20,10 @@ export const setUserName = (name) => {
     }
 }
 
-export const setUserImgPath = (path) => {
+export const setUserMail = (mail) => {
     return {
-        type: SET_USER_IMG_PATH,
-        path
+        type: SET_USER_MAIL,
+        mail
     }
 }
 

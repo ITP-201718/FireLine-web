@@ -33,12 +33,17 @@ class ProfileMenu extends React.Component {
     }
 
     render() {
-        const {classes, userName, userImgPath, menuOpen, anchorElMenu, push } = this.props;
+        const {classes, userName, userMail, menuOpen, anchorElMenu, push, gravatarHash } = this.props;
         return (<div>
             <IconButton onClick={this.openMenu}>
-                <Avatar src={userImgPath} className={classes.avatar} alt={userName}>
-                    {userImgPath ? '' : <AccountCircle/>}
-                </Avatar>
+                {
+                    userMail ?
+                        <Avatar src={'https://www.gravatar.com/avatar/' + gravatarHash + '?d=identicon&s=128'}
+                                className={classes.avatar} alt={userName}/> :
+                        <Avatar className={classes.avatar} alt={userName}>
+                            <AccountCircle/>
+                        </Avatar>
+                }
             </IconButton>
 
             <Menu
@@ -66,7 +71,7 @@ class ProfileMenu extends React.Component {
 ProfileMenu.propTypes = {
     classes: PropTypes.object.isRequired,
     userName: PropTypes.string.isRequired,
-    userImgPath: PropTypes.string,
+    userMail: PropTypes.string,
     menuOpen: PropTypes.bool.isRequired,
     anchorElMenu: PropTypes.object,
     setMenuOpen: PropTypes.func.isRequired,

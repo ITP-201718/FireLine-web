@@ -1,43 +1,23 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { withStyles } from 'material-ui/styles'
-import Grid from 'material-ui/Grid'
-import TextField from 'material-ui/TextField'
+import { connect } from 'react-redux'
+import Account_c from './Account_c'
+import { setUserMail } from '../../actions/profile';
 
-const styles = theme => ({
-    root: {
-        flexGrow: 1,
-    },
-    paper: {
-        padding: theme.spacing.unit * 2,
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
-    },
-});
-
-class Account extends React.Component {
-
-    render() {
-        const { classes } = this.props;
-
-        return (
-            <div className={classes.root}>
-                <Grid container spacing={24} justify='center'>
-                    <Grid item xs={4}>
-                        <TextField
-                            label="Name"
-                            margin="normal"
-                            fullWidth
-                        />
-                    </Grid>
-                </Grid>
-            </div>
-        )
+const mapStateToProps = (main_state) => {
+    let state = main_state.get('profile')
+    return {
+        userMail: state.get('mail'),
     }
 }
 
-Account.propTypes = {
-    classes: PropTypes.object,
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setUserMail: (value) => {dispatch(setUserMail(value))}
+    }
 }
 
-export default withStyles(styles)(Account)
+const Account = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Account_c)
+
+export default Account
