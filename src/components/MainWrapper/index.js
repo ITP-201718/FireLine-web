@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
 import MainWrapper_c from './MainWrapper'
 import { setDrawerOpen } from '../../actions/mainWrapper';
+import { push } from 'react-router-redux'
 
 const mapStateToProps = top_state => {
     const state = top_state.get('mainWrapper')
@@ -11,7 +12,8 @@ const mapStateToProps = top_state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        setDrawerOpen: (open) => {dispatch(setDrawerOpen(open))}
+        setDrawerOpen: (open) => {dispatch(setDrawerOpen(open))},
+        push: (to) => {dispatch(push(to))},
     }
 }
 

@@ -7,10 +7,18 @@ import {
     SET_NAVBAR_MENU_ANCHOR_EL
 } from '../actions/names';
 
-const  initialState = Immutable.fromJS({
+/*const  initialState = Immutable.fromJS({
     loggedIn: false,
     name: null,
     mail: null,
+    menuOpen: false,
+    anchorElMenu: null,
+});*/
+
+const  initialState = Immutable.fromJS({
+    loggedIn: true,
+    name: "David Langheiter",
+    mail: "david@langheiter.com",
     menuOpen: false,
     anchorElMenu: null,
 });
