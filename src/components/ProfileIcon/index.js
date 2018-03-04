@@ -15,6 +15,7 @@ const mapStateToProps = (main_state) => {
         loggedIn: state.get('loggedIn'),
         userName: state.get('name'),
         userMail:state.get('mail'),
+        //gravatarHash: state.get('mail') ? md5(state.get('mail').toLowerCase()) : '',
         gravatarHash: md5(state.get('mail').toLowerCase()),
         menuOpen: state.get('menuOpen'),
         anchorElMenu: state.get('anchorElMenu'),

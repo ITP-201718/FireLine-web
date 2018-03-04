@@ -15,10 +15,12 @@ import {
     anchorElMenu: null,
 });*/
 
+const LOGIN_DEBUG = true;
+
 const  initialState = Immutable.fromJS({
-    loggedIn: true,
-    name: "David Langheiter",
-    mail: "david@langheiter.com",
+    loggedIn: LOGIN_DEBUG,
+    name: LOGIN_DEBUG ? "David Langheiter" : null,
+    mail: LOGIN_DEBUG ? "david@langheiter.com" : null,
     menuOpen: false,
     anchorElMenu: null,
 });

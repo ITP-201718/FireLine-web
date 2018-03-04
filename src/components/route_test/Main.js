@@ -5,6 +5,7 @@ import Grid from 'material-ui/Grid'
 import LoggedIn from '../LoggedIn'
 import DataTable from '../DataTable'
 import Typography from 'material-ui/Typography'
+import About from '../About'
 
 const styles = theme => ({
     root: {
@@ -52,7 +53,8 @@ class Main extends React.Component {
         const drives = {
             names: [
                 {name: 'Datum', selector: 'date'},
-                {name: 'Kilometerstand', selector: 'distance'},
+                {name: 'Kilometerstand', selector: 'distance', props: {numeric: true},
+                    format: (val) => {return val.toLocaleString()}},
                 {name: 'Fahrer', selector: 'driver'},
                 {name: 'Fahrzeug', selector: 'vehicle'},
             ],
@@ -66,10 +68,9 @@ class Main extends React.Component {
         return (
             <div className={classes.root}>
                 <Grid container spacing={24} justify='center'>
-                    <Grid item xs={12} sm={10} md={8} lg={6}>
+                    <Grid item xs={12} sm={11} md={12} lg={10} xl={8}>
                         <LoggedIn not>
-                            <h1>Hello Users</h1>
-                            <h2>This is the main page</h2>
+                            <About/>
                         </LoggedIn>
                         <LoggedIn>
                             <Typography variant='display1' className={classes.display1}>Letzte Einsätze</Typography>

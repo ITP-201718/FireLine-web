@@ -26,7 +26,7 @@ class DataTable extends React.Component {
                         <TableRow>
                             {names.map(n => {
                                     return (
-                                        <TableCell key={n.name}>{n.name}</TableCell>
+                                        <TableCell key={n.name} {...n.props}>{n.name}</TableCell>
                                     )
                             })}
                         </TableRow>
@@ -37,8 +37,9 @@ class DataTable extends React.Component {
                                 <TableRow key={index}>
                                     {names.map((n, index) => {
                                         const select = n.selector ? n.selector : n.name
+                                        data[select] = n.format ? n.format(data[select]) : data[select];
                                         return (
-                                            <TableCell key={index}>{data[select]}</TableCell>
+                                            <TableCell key={index} {...n.props}>{data[select]}</TableCell>
                                         )
                                     })}
                                 </TableRow>

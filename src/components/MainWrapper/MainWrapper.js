@@ -63,8 +63,9 @@ const styles = theme => ({
         padding: theme.spacing.unit * 3,
         width: 'calc(100% - ' + theme.spacing.unit * 3 * 2 + 'px)',
     },
-    flex: {
+    title: {
         flex: 1,
+        cursor: 'pointer',
     },
 });
 
@@ -78,15 +79,27 @@ class MainWrapper extends React.Component {
                 <div className={classes.drawerToolbar}/>
                 <Divider/>
                 <List>
-                    <ListItem button onClick={() => {push('first')}}><ListItemText primary="First"/></ListItem>
-                    <ListItem button onClick={() => {push('second')}}><ListItemText primary="Second"/></ListItem>
-                    <ListItem button onClick={() => {push('third')}}><ListItemText primary="Third"/></ListItem>
+                    <ListItem button onClick={() => {
+                        push('first')
+                    }}><ListItemText primary="First"/></ListItem>
+                    <ListItem button onClick={() => {
+                        push('second')
+                    }}><ListItemText primary="Second"/></ListItem>
+                    <ListItem button onClick={() => {
+                        push('third')
+                    }}><ListItemText primary="Third"/></ListItem>
                 </List>
                 <Divider/>
                 <List>
-                    <ListItem button onClick={() => {push('eins')}}><ListItemText primary="Eins"/></ListItem>
-                    <ListItem button onClick={() => {push('zwei')}}><ListItemText primary="Zwei"/></ListItem>
-                    <ListItem button onClick={() => {push('drei')}}><ListItemText primary="Drei"/></ListItem>
+                    <ListItem button onClick={() => {
+                        push('eins')
+                    }}><ListItemText primary="Eins"/></ListItem>
+                    <ListItem button onClick={() => {
+                        push('zwei')
+                    }}><ListItemText primary="Zwei"/></ListItem>
+                    <ListItem button onClick={() => {
+                        push('drei')
+                    }}><ListItemText primary="Drei"/></ListItem>
                 </List>
             </div>
         )
@@ -108,7 +121,8 @@ class MainWrapper extends React.Component {
                                     <MenuIcon/>
                                 </IconButton>
                             </LoggedIn>
-                            <Typography variant="title" color="inherit" noWrap className={classes.flex}>
+                            <Typography variant="title" color="inherit" noWrap className={classes.title}
+                                        onClick={() => {push('/')}}>
                                 FireLine
                             </Typography>
                             <ProfileButton/>
