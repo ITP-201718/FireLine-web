@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import registerServiceWorker from './registerServiceWorker';
+//import registerServiceWorker from './registerServiceWorker';
 
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux'
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -47,4 +47,5 @@ ReactDOM.render((
         </Theme>
     </Provider>
 ), document.getElementById('root'));
-registerServiceWorker();
+
+//registerServiceWorker();
