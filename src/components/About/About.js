@@ -15,9 +15,9 @@ class About extends React.Component {
                 <Grid item xs={5} md={2} lg={3}>
                     <img src="/img/logo.svg" width="100%" alt="FireLine Logo"/>
                 </Grid>
-                <Grid item xs={0} lg={1}>
-
-                </Grid>
+                <Hidden xsDown>
+                    <Grid item lg={1} />
+                </Hidden>
                 <Grid item xs={12} md={10} lg={8}>
                     <Hidden smDown><br /><br /><br /></Hidden>
                     <Typography variant='display1'>

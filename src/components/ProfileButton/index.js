@@ -4,7 +4,10 @@ import {
     setLoggedIn,
     setUserName,
     setUserMail,
-} from '../../actions/profile';
+} from '../../redux/actions/profile';
+import {
+    loginPopupSetOpen
+} from '../../redux/actions/loginPopup';
 
 const mapStateToProps = (main_state) => {
     let state = main_state.get('profile')
@@ -21,6 +24,9 @@ const mapDispatchToProps = dispatch => {
                 dispatch(setUserMail('david@langheiter.com'))
             }
             dispatch(setLoggedIn(loggedIn))
+        },
+        openPopup: () => {
+            dispatch(loginPopupSetOpen(true))
         }
     }
 }

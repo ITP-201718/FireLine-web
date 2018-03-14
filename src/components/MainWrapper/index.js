@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import MainWrapper_c from './MainWrapper'
-import { setDrawerOpen } from '../../actions/mainWrapper';
+import { setDrawerOpen } from '../../redux/actions/mainWrapper';
 import { push } from 'react-router-redux'
 
 const mapStateToProps = top_state => {

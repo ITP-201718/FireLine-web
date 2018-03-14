@@ -35,6 +35,7 @@ class ProfileMenu extends React.Component {
 
     render() {
         const {classes, userName, userMail, menuOpen, anchorElMenu, push, gravatarHash } = this.props;
+
         return (<div>
             <IconButton onClick={this.openMenu}>
                 {

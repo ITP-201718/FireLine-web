@@ -6,6 +6,7 @@ import LoggedIn from '../LoggedIn'
 import DataTable from '../DataTable'
 import Typography from 'material-ui/Typography'
 import About from '../About'
+import LoginPopup from '../LoginPopup'
 
 const styles = theme => ({
     root: {
@@ -82,6 +83,7 @@ class Main extends React.Component {
                         </LoggedIn>
                     </Grid>
                 </Grid>
+                <LoginPopup/>
             </div>
         )
     }

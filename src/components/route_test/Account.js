@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import Account_c from './Account_c'
-import { setUserMail } from '../../actions/profile';
+import { setUserMail } from '../../redux/actions/profile';
 
 const mapStateToProps = (main_state) => {
     let state = main_state.get('profile')

@@ -1,23 +1,26 @@
 import { connect } from 'react-redux'
 import ProfileIcon_c from './ProfileIcon'
 import { push } from 'react-router-redux'
-import md5 from 'md5'
 
 import {
     setLoggedIn,
     setMenuOpen,
     setMenuAnchorEl
-} from '../../actions/profile';
+} from '../../redux/actions/profile';
+import {
+    profileGetAnchorElMenu,
+    profileGetLoggedIn, profileGetMail, profileGetMenuOpen, profileGetName,
+    profileMd5Hash
+} from '../../redux/selectors/selectors';
 
-const mapStateToProps = (main_state) => {
-    let state = main_state.get('profile')
+const mapStateToProps = (state) => {
     return {
-        loggedIn: state.get('loggedIn'),
-        userName: state.get('name'),
-        userMail:state.get('mail'),
-        gravatarHash: md5(state.get('mail').toLowerCase()),
-        menuOpen: state.get('menuOpen'),
-        anchorElMenu: state.get('anchorElMenu'),
+        loggedIn: profileGetLoggedIn(state),
+        userName: profileGetName(state),
+        userMail: profileGetMail(state),
+        gravatarHash: profileMd5Hash(state),
+        menuOpen: profileGetMenuOpen(state),
+        anchorElMenu: profileGetAnchorElMenu(state),
     }
 }
 

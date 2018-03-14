@@ -7,23 +7,28 @@ import {
     SET_NAVBAR_MENU_ANCHOR_EL
 } from '../actions/names';
 
-/*const  initialState = Immutable.fromJS({
-    loggedIn: false,
-    name: null,
-    mail: null,
-    menuOpen: false,
-    anchorElMenu: null,
-});*/
+function getInitialState() {
+    if(true) {
+        return Immutable.fromJS({
+            loggedIn: false,
+            name: null,
+            mail: null,
+            menuOpen: false,
+            anchorElMenu: null,
+        })
+    } else {
+        const AUTO_LOGGED_IN = true;
+        return Immutable.fromJS({
+            loggedIn: AUTO_LOGGED_IN,
+            name: AUTO_LOGGED_IN ? "David Langheiter" : null,
+            mail: AUTO_LOGGED_IN ? "david@langheiter.com" : null,
+            menuOpen: false,
+            anchorElMenu: null,
+        });
+    }
+}
 
-const LOGIN_DEBUG = true;
-
-const  initialState = Immutable.fromJS({
-    loggedIn: LOGIN_DEBUG,
-    name: LOGIN_DEBUG ? "David Langheiter" : null,
-    mail: LOGIN_DEBUG ? "david@langheiter.com" : null,
-    menuOpen: false,
-    anchorElMenu: null,
-});
+const initialState = getInitialState()
 
 const profile = (state = initialState, action) => {
     switch(action.type) {

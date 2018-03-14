@@ -2,21 +2,26 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import ProfileIcon from '../ProfileIcon'
 import Button from 'material-ui/Button'
+import LoginPopup from '../LoginPopup';
 
 class ProfileButton extends React.Component {
 
     render() {
-        const {loggedIn, setLoggedIn} = this.props
+        const {loggedIn, openPopup} = this.props
 
         return (
             <div>
                 {loggedIn ?
                     <ProfileIcon/> :
-                    <Button color='inherit' onClick={() => {
-                        setLoggedIn(true)
-                    }}>
-                        Login
-                    </Button>
+                    <div>
+                        <Button color='inherit' onClick={() => {
+                            //setLoggedIn(true)
+                            openPopup();
+                        }}>
+                            Login
+                        </Button>
+                        <LoginPopup />
+                    </div>
                 }
             </div>
         )
