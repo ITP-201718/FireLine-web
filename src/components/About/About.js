@@ -9,9 +9,6 @@ class About extends React.Component {
 
         return (
             <Grid container spacing={24} justify='center'>
-                {/*<Hidden smUp>
-                    <Grid item xs={3} />
-                </Hidden>*/}
                 <Grid item xs={5} md={2} lg={3}>
                     <img src="/img/logo.svg" width="100%" alt="FireLine Logo"/>
                 </Grid>
@@ -21,10 +18,10 @@ class About extends React.Component {
                 <Grid item xs={12} md={10} lg={8}>
                     <Hidden smDown><br /><br /><br /></Hidden>
                     <Typography variant='display1'>
-                        Wilkommen
+                        Willkommen
                     </Typography>
                     <Typography variant='title'>
-                        FireLine ist ein Online-Verwaltungssystem der österreichischen Feuerwehr
+                        FireLine ist ein Online Verwaltungs-System der österreichischen Feuerwehr
                     </Typography>
                 </Grid>
             </Grid>
