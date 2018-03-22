@@ -3,14 +3,16 @@ import PropTypes from 'prop-types'
 import TextField from 'material-ui/TextField'
 import Button from 'material-ui/Button'
 import { CircularProgress } from 'material-ui/Progress'
-import { AUTOBAHN_CONNECTION_STATE } from '../../redux/actions/names';
+import { AUTOBAHN_CONNECTION_STATES } from '../../redux/names';
 import Dialog, {
     DialogActions,
     DialogContent,
     DialogTitle,
     withMobileDialog,
 } from 'material-ui/Dialog'
+import Typography from 'material-ui/Typography'
 import { withStyles } from 'material-ui/styles'
+import Icon from 'material-ui/Icon'
 
 const styles = theme => ({
     wrapper: {
@@ -32,7 +34,13 @@ const styles = theme => ({
         left: 0,
         bottom: 0,
         right: 0,
-    }
+    },
+    text: {
+        marginTop: theme.spacing.unit * 3,
+        display: 'flex',
+        flex: "0 0 auto",
+        alignItems: "center",
+    },
 })
 
 class LoginPopup extends React.Component {
@@ -49,9 +57,16 @@ class LoginPopup extends React.Component {
        handleLogin(user, pw)
    }
 
+   onKeyPress = (event) => {
+       if(event.charCode === 13) {
+           event.preventDefault()
+           this.login()
+       }
+   }
+
     render() {
-        const { open, user, setName, pw, setPw, fullScreen, classes, connectionState } = this.props
-        const connecting = connectionState === AUTOBAHN_CONNECTION_STATE.connecting
+        const { open, user, setName, pw, setPw, fullScreen, classes, connectionState, error, errorMsg } = this.props
+        const connecting = connectionState === AUTOBAHN_CONNECTION_STATES.connecting
 
         return (
             <Dialog open={open} onClose={this.close} fullScreen={fullScreen}>
@@ -61,6 +76,7 @@ class LoginPopup extends React.Component {
                         autoFocus
                         margin='normal'
                         label='Username/Email'
+                        onKeyPress={this.onKeyPress}
                         value={user}
                         onChange={(event) => {setName(event.target.value)}}
                         fullWidth
@@ -69,10 +85,16 @@ class LoginPopup extends React.Component {
                         margin='normal'
                         label='Password'
                         type='password'
+                        onKeyPress={this.onKeyPress}
                         value={pw}
                         onChange={(event) => {setPw(event.target.value)}}
                         fullWidth
                     />
+                    {error &&
+                        <Typography color="error" className={classes.text}>
+                            <Icon>error</Icon>&nbsp;<span>{errorMsg}</span>
+                        </Typography>
+                    }
                 </DialogContent>
                 <DialogActions>
                     <Button
@@ -108,6 +130,8 @@ LoginPopup.propTypes = {
     setPw: PropTypes.func.isRequired,
     setOpen: PropTypes.func.isRequired,
     handleLogin: PropTypes.func.isRequired,
+    error: PropTypes.bool.isRequired,
+    errorMsg: PropTypes.string.isRequired,
 }
 
 export default withStyles(styles)(withMobileDialog()(LoginPopup))

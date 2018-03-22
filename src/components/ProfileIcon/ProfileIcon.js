@@ -5,6 +5,7 @@ import AccountCircle from 'material-ui-icons/AccountCircle';
 import Avatar from 'material-ui/Avatar'
 import Menu, { MenuItem } from 'material-ui/Menu'
 import { withStyles } from 'material-ui/styles'
+import {disconnectWs} from '../../general/Autobahn';
 
 const styles = theme => ({
     avatar: {
@@ -28,9 +29,11 @@ class ProfileMenu extends React.Component {
 
     logout = () => {
         const { setLoggedIn, push } = this.props
+
         push('/')
         setLoggedIn(false)
         this.closeMenu()
+        disconnectWs()
     }
 
     render() {
@@ -62,7 +65,7 @@ class ProfileMenu extends React.Component {
                 onClose={this.closeMenu}
             >
                 <MenuItem onClick={() => {this.closeMenu(); push('/')}}>Main</MenuItem>
-                <MenuItem onClick={() => {this.closeMenu(); push('/account')}}>My Account</MenuItem>
+                <MenuItem onClick={() => {this.closeMenu(); push('/profile')}}>My Account</MenuItem>
                 <MenuItem onClick={this.logout}>Logout</MenuItem>
             </Menu>
         </div>)

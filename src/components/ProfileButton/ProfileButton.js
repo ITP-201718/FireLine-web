@@ -15,7 +15,6 @@ class ProfileButton extends React.Component {
                     <ProfileIcon/> :
                     <div>
                         <Button color='inherit' onClick={() => {
-                            //setLoggedIn(true)
                             openPopup();
                         }}>
                             Login

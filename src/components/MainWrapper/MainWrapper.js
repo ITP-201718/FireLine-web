@@ -12,6 +12,7 @@ import Divider from 'material-ui/Divider';
 import MenuIcon from 'material-ui-icons/Menu';
 import ProfileButton from '../ProfileButton';
 import LoggedIn from '../LoggedIn'
+import UserMessage from '../UserMessage'
 
 const drawerWidth = 240;
 
@@ -94,6 +95,14 @@ const styles = theme => {
 
 class MainWrapper extends React.Component {
 
+    drawerPush = (target) => {
+        const {setDrawerOpen, push} = this.props
+        return () => {
+            setDrawerOpen(false)
+            push(target)
+        }
+    }
+
     render() {
         const {classes, drawerOpen, setDrawerOpen, children, push} = this.props
 
@@ -103,6 +112,7 @@ class MainWrapper extends React.Component {
                     <Typography
                         variant="title" color="default" noWrap className={classes.title}
                         classes={{root: classes.whiteColor}}
+                        onClick={this.drawerPush('/')}
                     >
                         FireLine
                     </Typography>
@@ -110,63 +120,33 @@ class MainWrapper extends React.Component {
                 <div className={classes.drawerItemsWrapper}>
                     <Divider/>
                     <List>
-                        <ListItem button onClick={() => {
-                            push('first')
-                        }}><ListItemText primary="First"/></ListItem>
-                        <ListItem button onClick={() => {
-                            push('second')
-                        }}><ListItemText primary="Second"/></ListItem>
-                        <ListItem button onClick={() => {
-                            push('third')
-                        }}><ListItemText primary="Third"/></ListItem>
+                        <ListItem button onClick={this.drawerPush('first')}><ListItemText primary="First"/></ListItem>
+                        <ListItem button onClick={this.drawerPush('second')}><ListItemText primary="Second"/></ListItem>
+                        <ListItem button onClick={this.drawerPush('third')}><ListItemText primary="Third"/></ListItem>
                     </List>
                     <Divider/>
                     <List>
-                        <ListItem button onClick={() => {
-                            push('eins')
-                        }}><ListItemText primary="Eins"/></ListItem>
-                        <ListItem button onClick={() => {
-                            push('zwei')
-                        }}><ListItemText primary="Zwei"/></ListItem>
-                        <ListItem button onClick={() => {
-                            push('drei')
-                        }}><ListItemText primary="Drei"/></ListItem>
+                        <ListItem button onClick={this.drawerPush('eins')}><ListItemText primary="Eins"/></ListItem>
+                        <ListItem button onClick={this.drawerPush('zwei')}><ListItemText primary="Zwei"/></ListItem>
+                        <ListItem button onClick={this.drawerPush('drei')}><ListItemText primary="Drei"/></ListItem>
                     </List>
                     <Divider/>
                     <List>
-                        <ListItem button onClick={() => {
-                            push('uno')
-                        }}><ListItemText primary="Uno"/></ListItem>
-                        <ListItem button onClick={() => {
-                            push('dos')
-                        }}><ListItemText primary="Dos"/></ListItem>
-                        <ListItem button onClick={() => {
-                            push('tres')
-                        }}><ListItemText primary="Tres"/></ListItem>
+                        <ListItem button onClick={this.drawerPush('uno')}><ListItemText primary="Uno"/></ListItem>
+                        <ListItem button onClick={this.drawerPush('dos')}><ListItemText primary="Dos"/></ListItem>
+                        <ListItem button onClick={this.drawerPush('tres')}><ListItemText primary="Tres"/></ListItem>
                     </List>
                     <Divider/>
                     <List>
-                        <ListItem button onClick={() => {
-                            push('un')
-                        }}><ListItemText primary="Un"/></ListItem>
-                        <ListItem button onClick={() => {
-                            push('deux')
-                        }}><ListItemText primary="Deux"/></ListItem>
-                        <ListItem button onClick={() => {
-                            push('trois')
-                        }}><ListItemText primary="Trois"/></ListItem>
+                        <ListItem button onClick={this.drawerPush('un')}><ListItemText primary="Un"/></ListItem>
+                        <ListItem button onClick={this.drawerPush('deux')}><ListItemText primary="Deux"/></ListItem>
+                        <ListItem button onClick={this.drawerPush('trois')}><ListItemText primary="Trois"/></ListItem>
                     </List>
                     <Divider/>
                     <List>
-                        <ListItem button onClick={() => {
-                            push('uno')
-                        }}><ListItemText primary="Uno"/></ListItem>
-                        <ListItem button onClick={() => {
-                            push('due')
-                        }}><ListItemText primary="Due"/></ListItem>
-                        <ListItem button onClick={() => {
-                            push('tre')
-                        }}><ListItemText primary="Tre"/></ListItem>
+                        <ListItem button onClick={this.drawerPush('uno')}><ListItemText primary="Uno"/></ListItem>
+                        <ListItem button onClick={this.drawerPush('due')}><ListItemText primary="Due"/></ListItem>
+                        <ListItem button onClick={this.drawerPush('tre')}><ListItemText primary="Tre"/></ListItem>
                     </List>
                 </div>
             </div>
@@ -174,6 +154,7 @@ class MainWrapper extends React.Component {
 
         return (
             <div className={classes.rootWrapper}>
+                <UserMessage/>
                 <div className={classes.root}>
                     <AppBar className={classes.appBar}>
                         <Toolbar>

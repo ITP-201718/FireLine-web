@@ -1,7 +1,7 @@
 import React from 'react'
 import MainWrapper from '../components/MainWrapper';
 import Main from '../components/route_test/Main';
-import Account from '../components/route_test/Account';
+import Profile from '../pages/profile';
 import Default from '../components/route_test/Default';
 import {store} from './Redux';
 import {syncHistoryWithStore} from 'react-router-redux';
@@ -12,7 +12,7 @@ const routes = {
     component: MainWrapper,
     indexRoute: { component: Main},
     childRoutes: [
-        { path: 'account', component: Account },
+        { path: 'profile', component: Profile },
         { path: ':pageName', component: Default },
     ]
 }

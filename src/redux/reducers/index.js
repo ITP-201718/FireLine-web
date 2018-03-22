@@ -5,6 +5,7 @@ import routing from './routing'
 import profile from './profile'
 import loginPopup from './loginPopup'
 import autobahn from './autobahn'
+import userMessage from './userMessage'
 
 const Reducer = combineReducers({
     mainWrapper,
@@ -12,6 +13,7 @@ const Reducer = combineReducers({
     profile,
     loginPopup,
     autobahn,
+    userMessage,
 })
 
 export default Reducer

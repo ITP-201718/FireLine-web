@@ -2,6 +2,8 @@
   "name": "FireLine",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://fireline.io/",
+  "author": "FireLine Team (https://github.com/ITP-201718/)",
   "dependencies": {
     "autobahn": "^17.5.2",
     "cbor": "^4.0.0",

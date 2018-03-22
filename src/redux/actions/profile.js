@@ -1,10 +1,10 @@
 import {
     SET_LOGGED_IN,
-    SET_USER_NAME,
-    SET_USER_MAIL,
+    PROFILE_SET_USER_NAME,
+    PROFILE_SET_USER_MAIL,
     SET_NAVBAR_MENU_OPEN,
     SET_NAVBAR_MENU_ANCHOR_EL,
-} from './names'
+} from '../names'
 
 export const setLoggedIn = (loggedIn) => {
     return {
@@ -15,14 +15,14 @@ export const setLoggedIn = (loggedIn) => {
 
 export const setUserName = (name) => {
     return {
-        type: SET_USER_NAME,
+        type: PROFILE_SET_USER_NAME,
         name
     }
 }
 
 export const setUserMail = (mail) => {
     return {
-        type: SET_USER_MAIL,
+        type: PROFILE_SET_USER_MAIL,
         mail
     }
 }

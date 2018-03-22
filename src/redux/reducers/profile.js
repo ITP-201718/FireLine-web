@@ -1,22 +1,14 @@
 import Immutable from 'immutable'
 import {
     SET_LOGGED_IN,
-    SET_USER_NAME,
-    SET_USER_MAIL,
+    PROFILE_SET_USER_NAME,
+    PROFILE_SET_USER_MAIL,
     SET_NAVBAR_MENU_OPEN,
     SET_NAVBAR_MENU_ANCHOR_EL
-} from '../actions/names';
+} from '../names';
 
 function getInitialState() {
-    if(true) {
-        return Immutable.fromJS({
-            loggedIn: false,
-            name: null,
-            mail: null,
-            menuOpen: false,
-            anchorElMenu: null,
-        })
-    } else {
+    if(!!window.FIRELINE_DEBUG) {
         const AUTO_LOGGED_IN = true;
         return Immutable.fromJS({
             loggedIn: AUTO_LOGGED_IN,
@@ -25,6 +17,14 @@ function getInitialState() {
             menuOpen: false,
             anchorElMenu: null,
         });
+    } else {
+        return Immutable.fromJS({
+            loggedIn: false,
+            name: null,
+            mail: null,
+            menuOpen: false,
+            anchorElMenu: null,
+        })
     }
 }
 
@@ -34,16 +34,16 @@ const profile = (state = initialState, action) => {
     switch(action.type) {
         case SET_LOGGED_IN:
             return state.set('loggedIn', !!action.loggedIn);
-        case SET_USER_NAME:
+        case PROFILE_SET_USER_NAME:
             return state.set('name', action.name)
-        case SET_USER_MAIL:
+        case PROFILE_SET_USER_MAIL:
             return state.set('mail', action.mail)
         case SET_NAVBAR_MENU_OPEN:
             return state.set('menuOpen', action.open)
         case SET_NAVBAR_MENU_ANCHOR_EL:
             return state.set('anchorElMenu', action.el)
         default:
-            return state;
+            return state
     }
 }
 

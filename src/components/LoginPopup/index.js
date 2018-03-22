@@ -4,14 +4,14 @@ import {
     loginPopupGetName,
     loginPopupGetPw,
     loginPopupIsOpen,
-    autobahnConnectionState,
+    autobahnConnectionState, loginPopupError, loginPopupErrorMsg,
 } from '../../redux/selectors/selectors';
 import {
     loginPopupSetName,
     loginPopupSetPw,
-    loginPopupSetOpen,
+    loginPopupSetOpen, loginPopupSetErrorMsg, loginPopupSetError,
 } from '../../redux/actions/loginPopup';
-import {connectToWs} from '../../general/Autobahn';
+import {call, getUserErrorMessage, tryUserAuth} from '../../general/Autobahn';
 import {setLoggedIn, setUserMail} from '../../redux/actions/profile';
 
 const mapStateToProps = (state) => {
@@ -20,6 +20,31 @@ const mapStateToProps = (state) => {
         pw: loginPopupGetPw(state),
         open: loginPopupIsOpen(state),
         connectionState: autobahnConnectionState(state),
+        error: loginPopupError(state),
+        errorMsg: loginPopupErrorMsg(state)
+    }
+}
+
+function connectToWs(user, pw) {
+    return (dispatch, getStore, session) => {
+        tryUserAuth(user, pw)
+            .then(res => {
+                dispatch(loginPopupSetName(''))
+                dispatch(loginPopupSetOpen(false))
+                dispatch(setLoggedIn(true))
+
+                call('profile.get_mail').then((res) => {
+                    dispatch(setUserMail(res))
+                })
+
+                /*res.session.call('io.fireline.api.profile.get_mail').then((res) => {
+                    dispatch(setUserMail(res))
+                })*/
+            })
+            .catch(error => {
+                dispatch(loginPopupSetErrorMsg(getUserErrorMessage(error)))
+                dispatch(loginPopupSetError(true))
+            })
     }
 }
 
@@ -28,19 +53,7 @@ const mapDispatchToProps = (dispatch) => {
         setName: (name) => {dispatch(loginPopupSetName(name))},
         setPw: (pw) => {dispatch(loginPopupSetPw(pw))},
         setOpen: (open) => {dispatch(loginPopupSetOpen(open))},
-        handleLogin: (user, pw) => {
-            dispatch((dispatch, getStore, api) => {
-                connectToWs(user, pw, (session) => {
-                    dispatch(loginPopupSetName(''))
-                    dispatch(loginPopupSetOpen(false))
-                    dispatch(setLoggedIn(true))
-                    session.call("io.fireline.api.profile.get_mail").then((res) => {
-                        console.log("Got Mail: " + res)
-                        dispatch(setUserMail(res))
-                    })
-                })
-            })
-        },
+        handleLogin: (user, pw) => dispatch(connectToWs(user, pw)),
     }
 }
 

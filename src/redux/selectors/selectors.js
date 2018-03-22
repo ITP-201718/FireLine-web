@@ -24,8 +24,16 @@ export const loginPopupIsOpen = (state) => {
     return state.getIn(['loginPopup', 'open'])
 }
 
+export const loginPopupError = (state) => {
+    return state.getIn(['loginPopup', 'error'])
+}
+
+export const loginPopupErrorMsg = (state) => {
+    return state.getIn(['loginPopup', 'errorMsg'])
+}
+
 export const autobahnConnectionState = (state) => {
-    return state.getIn(['autobahn', 'state'])
+    return useDefault(state.getIn(['autobahn', 'state']), '')
 }
 
 //*********************************************
@@ -53,4 +61,19 @@ export const profileGetMenuOpen = (state) => {
 
 export const profileGetAnchorElMenu = (state) => {
     return state.getIn(['profile', 'anchorElMenu'])
+}
+
+//*********************************************
+// User Message
+//*********************************************
+export const getUserMessageOpen = (state) => {
+    return state.getIn(['userMessage', 'open'])
+}
+
+export const getUserMessageMessage = (state) => {
+    return state.getIn(['userMessage', 'message'])
+}
+
+export const getUserMessageCloseDuration = (state) => {
+    return state.getIn(['userMessage', 'closeDuration'])
 }
