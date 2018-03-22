@@ -64,8 +64,6 @@ class Account extends React.Component {
         }
     }
 
-
-
     updateValue = (name, value) => {
         let values = {...this.state.values}
         values[name] = value
