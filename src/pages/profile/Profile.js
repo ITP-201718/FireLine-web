@@ -6,6 +6,8 @@ import TextField from 'material-ui/TextField'
 import Button from 'material-ui/Button'
 import Save from 'material-ui-icons/Save'
 import { CircularProgress } from 'material-ui/Progress';
+import Typography from 'material-ui/Typography'
+import Container from '../../components/Container'
 
 const styles = theme => ({
     root: {
@@ -49,15 +51,17 @@ class Account extends React.Component {
 
     constructor(props) {
         super(props)
-        const { userName, userMail, setUserName, setUserMail } = props
+        const { vname, nname, mail, setvname, setnname, setmail } = props
         this.state = {
             updateCalls: {
-                userName: setUserName,
-                userMail: setUserMail,
+                vname: setvname,
+                nname: setnname,
+                userMail: setmail,
             },
             values: {
-                userName,
-                userMail
+                vname,
+                nname,
+                mail
             },
             changed: [],
             saving: false,
@@ -93,13 +97,122 @@ class Account extends React.Component {
 
         return (
             <div className={classes.root}>
-                <Grid container spacing={24} justify='center'>
+                <Container>
+                    <Typography variant='display1'>Profile</Typography>
+                    <Grid container spacing={24} justify='center'>
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                label="Vorname"
+                                value={this.state.values.vname}
+                                fullWidth
+                                onChange={(event) => {
+                                    this.updateValue('vname', event.target.value)
+                                }}
+                                margin="normal"
+                                InputLabelProps={{
+                                    FormControlClasses: {
+                                        focused: classes.inputLabelFocused,
+                                    }
+                                }}
+                                InputProps={{
+                                    classes: {
+                                        inkbar: classes.inputInkbar,
+                                    }
+                                }}
+                            />
+                        </Grid>
+
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                label="Nachname"
+                                value={this.state.values.nname}
+                                fullWidth
+                                onChange={(event) => {
+                                    this.updateValue('nname', event.target.value)
+                                }}
+                                margin="normal"
+                                InputLabelProps={{
+                                    FormControlClasses: {
+                                        focused: classes.inputLabelFocused,
+                                    }
+                                }}
+                                InputProps={{
+                                    classes: {
+                                        inkbar: classes.inputInkbar,
+                                    }
+                                }}
+                            />
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <TextField
+                                label="E-mail"
+                                value={this.state.values.mail}
+                                type='email'
+                                fullWidth
+                                onChange={(event) => {
+                                    this.updateValue('mail', event.target.value)
+                                }}
+                                margin="normal"
+                                InputLabelProps={{
+                                    FormControlClasses: {
+                                        focused: classes.inputLabelFocused,
+                                    }
+                                }}
+                                InputProps={{
+                                    classes: {
+                                        inkbar: classes.inputInkbar,
+                                    }
+                                }}
+                            />
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <div className={classes.toRight}>
+                                <div className={classes.wrapper}>
+                                    <Button variant="raised" color='primary' size='small'
+                                            onClick={this.save} disabled={this.state.saving}>
+                                        Save
+                                        <Save className={classes.rightIcon} />
+                                    </Button>
+                                    {this.state.saving &&
+                                    <CircularProgress
+                                        className={classes.progress}
+                                        //style={{color: theme.palette.text.disabled}}
+                                        size={24}/>
+                                    }
+                                </div>
+                            </div>
+                        </Grid>
+
+                    </Grid>
+                </Container>
+
+                {/*<Grid container spacing={24} justify='center'>
                     <Grid item xs={12} sm={11} md={12} lg={10} xl={8}>
                         <TextField
-                            label="Name"
-                            value={this.state.values.userName}
+                            label="Vorname"
+                            value={this.state.values.vname}
                             onChange={(event) => {
-                                this.updateValue('userName', event.target.value)
+                                this.updateValue('vname', event.target.value)
+                            }}
+                            margin="normal"
+                            InputLabelProps={{
+                                FormControlClasses: {
+                                    focused: classes.inputLabelFocused,
+                                }
+                            }}
+                            InputProps={{
+                                classes: {
+                                    inkbar: classes.inputInkbar,
+                                }
+                            }}
+                        />
+                        <TextField
+                            label="Nachname"
+                            value={this.state.values.nname}
+                            onChange={(event) => {
+                                this.updateValue('nname', event.target.value)
                             }}
                             margin="normal"
                             InputLabelProps={{
@@ -114,9 +227,11 @@ class Account extends React.Component {
                             }}
                             fullWidth
                         />
+                    </Grid>
+                    <Grid item>
                         <TextField
                             label="E-Mail"
-                            value={this.state.values.userMail}
+                            value={this.state.values.mail}
                             onChange={(event) => {
                                 this.updateValue('userMail', event.target.value)
                             }}
@@ -133,6 +248,8 @@ class Account extends React.Component {
                             }}
                             fullWidth
                         />
+                    </Grid>
+                    <Grid>
                         <div className={classes.toRight}>
                             <div className={classes.wrapper}>
                                 <Button variant="raised" color='primary' size='small'
@@ -149,7 +266,7 @@ class Account extends React.Component {
                             </div>
                         </div>
                     </Grid>
-                </Grid>
+                </Grid>*/}
             </div>
         )
     }

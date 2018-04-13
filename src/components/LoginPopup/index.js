@@ -12,7 +12,7 @@ import {
     loginPopupSetOpen, loginPopupSetErrorMsg, loginPopupSetError,
 } from '../../redux/actions/loginPopup';
 import {call, getUserErrorMessage, tryUserAuth} from '../../general/Autobahn';
-import {setLoggedIn, setUserMail, setUserName} from '../../redux/actions/profile';
+import {setLoggedIn, setUserMail, setUserVName, setUserNName} from '../../redux/actions/profile';
 
 const mapStateToProps = (state) => {
     return {
@@ -25,19 +25,32 @@ const mapStateToProps = (state) => {
     }
 }
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setName: (name) => {dispatch(loginPopupSetName(name))},
+        setPw: (pw) => {dispatch(loginPopupSetPw(pw))},
+        setOpen: (open) => {dispatch(loginPopupSetOpen(open))},
+        handleLogin: (user, pw) => dispatch(connectToWs(user, pw)),
+    }
+}
+
 function connectToWs(user, pw) {
     return (dispatch, getStore, session) => {
         tryUserAuth(user, pw)
             .then(res => {
                 dispatch(loginPopupSetName(''))
                 dispatch(loginPopupSetOpen(false))
+                dispatch(loginPopupSetError(false))
                 dispatch(setLoggedIn(true))
 
                 call('profile.get_mail').then((res) => {
                     dispatch(setUserMail(res))
                 })
-                call('profile.get_name').then((res) => {
-                    dispatch(setUserName(res))
+                call('profile.get_vname').then((res) => {
+                    dispatch(setUserVName(res))
+                })
+                call('profile.get_nname').then((res) => {
+                    dispatch(setUserNName(res))
                 })
 
                 /*res.session.call('io.fireline.api.profile.get_mail').then((res) => {
@@ -48,15 +61,6 @@ function connectToWs(user, pw) {
                 dispatch(loginPopupSetErrorMsg(getUserErrorMessage(error)))
                 dispatch(loginPopupSetError(true))
             })
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        setName: (name) => {dispatch(loginPopupSetName(name))},
-        setPw: (pw) => {dispatch(loginPopupSetPw(pw))},
-        setOpen: (open) => {dispatch(loginPopupSetOpen(open))},
-        handleLogin: (user, pw) => dispatch(connectToWs(user, pw)),
     }
 }
 

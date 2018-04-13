@@ -1,6 +1,7 @@
 import {
     SET_LOGGED_IN,
-    PROFILE_SET_USER_NAME,
+    PROFILE_SET_USER_VNAME,
+    PROFILE_SET_USER_NNAME,
     PROFILE_SET_USER_MAIL,
     SET_NAVBAR_MENU_OPEN,
     SET_NAVBAR_MENU_ANCHOR_EL,
@@ -13,10 +14,17 @@ export const setLoggedIn = (loggedIn) => {
     }
 }
 
-export const setUserName = (name) => {
+export const setUserVName = (vname) => {
     return {
-        type: PROFILE_SET_USER_NAME,
-        name
+        type: PROFILE_SET_USER_VNAME,
+        vname
+    }
+}
+
+export const setUserNName = (nname) => {
+    return {
+        type: PROFILE_SET_USER_NNAME,
+        nname
     }
 }
 
@@ -26,6 +34,7 @@ export const setUserMail = (mail) => {
         mail
     }
 }
+
 
 export const setMenuOpen = (open) => {
     return {

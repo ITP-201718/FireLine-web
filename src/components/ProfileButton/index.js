@@ -1,9 +1,7 @@
 import { connect } from 'react-redux'
 import ProfileButton_c from './ProfileButton'
 import {
-    setLoggedIn,
-    setUserName,
-    setUserMail,
+    setLoggedIn
 } from '../../redux/actions/profile';
 import {
     loginPopupSetOpen
@@ -19,10 +17,6 @@ const mapStateToProps = (main_state) => {
 const mapDispatchToProps = dispatch => {
     return {
         setLoggedIn: (loggedIn) => {
-            if(!!loggedIn) {
-                dispatch(setUserName('David'))
-                dispatch(setUserMail('david@langheiter.com'))
-            }
             dispatch(setLoggedIn(loggedIn))
         },
         openPopup: () => {
