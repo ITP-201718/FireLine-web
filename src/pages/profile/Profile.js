@@ -8,8 +8,13 @@ import Save from 'material-ui-icons/Save'
 import { CircularProgress } from 'material-ui/Progress'
 import Typography from 'material-ui/Typography'
 import Container from '../../components/Container'
+<<<<<<< HEAD
 import Select from 'material-ui/Select'
 import { MenuItem } from 'material-ui/Menu'
+=======
+import Avatar from 'material-ui/Avatar'
+import classNames from 'classnames'
+>>>>>>> Profil Seite geändert
 
 const styles = theme => ({
     root: {
@@ -46,7 +51,15 @@ const styles = theme => ({
         left: '50%',
         marginTop: -12,
         marginLeft: -12,
-    }
+    },
+    row: {
+        display: 'flex',
+        justifyContent: 'center',
+    },
+    bigAvatar: {
+        width: 150,
+        height: 150,
+    },
 });
 
 class Account extends React.Component {
@@ -101,7 +114,19 @@ class Account extends React.Component {
             <div className={classes.root}>
                 <Container>
                     <Typography variant='display1'>Profile</Typography>
+<<<<<<< HEAD
                     <Grid container spacing={24}>
+=======
+                    <div className={classes.row}>
+                        <Avatar
+                            alt="Adelle Charles"
+                            src="https://www.gravatar.com/avatar/43b7f85604aaba589180c506ce4f1d06?d=identicon&s=128"
+                            className={classNames(classes.avatar, classes.bigAvatar)}
+                        />
+                    </div>
+                    <Grid container spacing={24} justify="center">
+
+>>>>>>> Profil Seite geändert
                         <Grid item xs={12} md={6}>
                             <TextField
                                 label="Vorname"
