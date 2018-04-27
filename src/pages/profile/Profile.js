@@ -14,7 +14,14 @@ import { MenuItem } from 'material-ui/Menu'
 =======
 import Avatar from 'material-ui/Avatar'
 import classNames from 'classnames'
+<<<<<<< HEAD
 >>>>>>> Profil Seite geändert
+=======
+import Input, { InputLabel } from 'material-ui/Input'
+import { MenuItem } from 'material-ui/Menu'
+import { FormControl, FormHelperText } from 'material-ui/Form'
+import Select from 'material-ui/Select'
+>>>>>>> Profil Page wurde erweitert
 
 const styles = theme => ({
     root: {
@@ -60,9 +67,29 @@ const styles = theme => ({
         width: 150,
         height: 150,
     },
+    formControl: {
+        margin: theme.spacing.unit,
+        minWidth: 120,
+    },
+    selectEmpty: {
+        marginTop: theme.spacing.unit * 2,
+    },
+    container: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+    textField: {
+        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
+        width: 200,
+    },
 });
 
 class Account extends React.Component {
+
+    handleChange = event => {
+        this.setState({ [event.target.name]: event.target.value });
+    };
 
     constructor(props) {
         super(props)
@@ -124,7 +151,7 @@ class Account extends React.Component {
                             className={classNames(classes.avatar, classes.bigAvatar)}
                         />
                     </div>
-                    <Grid container spacing={24} justify="center">
+                    <Grid container spacing={24} justify="">
 
 >>>>>>> Profil Seite geändert
                         <Grid item xs={12} md={6}>
@@ -163,10 +190,9 @@ class Account extends React.Component {
                                         focused: classes.inputLabelFocused,
                                     }
                                 }}
-                                InputProps={{
-                                    classes: {
-                                        inkbar: classes.inputInkbar,
-                                    }
+                                InputProps={{ classes: {
+                                    inkbar: classes.inputInkbar,
+                                }
                                 }}
                             />
                         </Grid>
@@ -195,6 +221,7 @@ class Account extends React.Component {
                             />
                         </Grid>
 
+<<<<<<< HEAD
                         <Grid item xs={6}>
                             <Select
                                 value='m'
@@ -212,6 +239,84 @@ class Account extends React.Component {
 
 
                         {/* Save Button */}
+=======
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                label="Password"
+                                id="pass"
+                                fullWidth
+                                type="password"
+                                margin="normal"
+                                InputLabelProps={{
+                                    FormControlClasses: {
+                                        focused: classes.inputLabelFocused,
+                                    }
+                                }}
+                                InputProps={{
+                                    classes: {
+                                        inkbar: classes.inputInkbar,
+                                    }
+                                }}
+                            />
+                        </Grid>
+
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                label="Passwort wiederholen"
+                                id="pass_again"
+                                fullWidth
+                                type="password"
+                                margin="normal"
+                                InputLabelProps={{
+                                    FormControlClasses: {
+                                        focused: classes.inputLabelFocused,
+                                    }
+                                }}
+                                InputProps={{
+                                    classes: {
+                                        inkbar: classes.inputInkbar,
+                                    }
+                                }}
+                            />
+                        </Grid>
+
+                        <Grid item xs={12} md={6}>
+                            <form className={classes.root} autoComplete="off">
+                                <FormControl className={classes.FormControl} fullWidth>
+                                    <InputLabel htmlFor="sex-simple">Geschlecht</InputLabel>
+                                    <Select
+                                        value={'m'}
+                                        onChange={this.handleChange}
+                                        inputProps={{
+                                            name: 'sex',
+                                            id: 'sex-simple'
+                                        }}
+                                    >
+                                        <MenuItem value={'m'}>Männlich</MenuItem>
+                                        <MenuItem value={'f'}>Weiblich</MenuItem>
+                                        <MenuItem value={'o'}>Andere</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </form>
+                        </Grid>
+
+                        <Grid item xs={12} md={6}>
+                            <form className={classes.container} noValidate>
+                                <TextField
+                                    id="date"
+                                    fullWidth
+                                    label="Geburtstag"
+                                    type="date"
+                                    defaultValue="1990-05-24"
+                                    className={classes.textField}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                />
+                            </form>
+                        </Grid>
+
+>>>>>>> Profil Page wurde erweitert
                         <Grid item xs={12}>
                             <div className={classes.toRight}>
                                 <div className={classes.wrapper}>
