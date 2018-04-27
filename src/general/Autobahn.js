@@ -13,7 +13,7 @@ const DEBUGGING = true
 
 const getUrl = () => {
     if(DEBUGGING)
-        return "wss://fireline.io:8080/api"
+        return "wss://david.fireline.io/api"
     const host = window.location.hostname
     return "wss://" + host + ":8080/ws"
 }

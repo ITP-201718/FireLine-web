@@ -22,7 +22,7 @@
         }
 
         let connection = new autobahn.Connection({
-            url: 'wss://fireline.thekingdave.com:8080/ws',
+            url: 'wss://' + window.location.hostname +'/api',
             realm: 'realm1',
             authmethods: ['cookie', 'wampcra'],
             authid: user,

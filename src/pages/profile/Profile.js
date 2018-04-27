@@ -5,9 +5,11 @@ import Grid from 'material-ui/Grid'
 import TextField from 'material-ui/TextField'
 import Button from 'material-ui/Button'
 import Save from 'material-ui-icons/Save'
-import { CircularProgress } from 'material-ui/Progress';
+import { CircularProgress } from 'material-ui/Progress'
 import Typography from 'material-ui/Typography'
 import Container from '../../components/Container'
+import Select from 'material-ui/Select'
+import { MenuItem } from 'material-ui/Menu'
 
 const styles = theme => ({
     root: {
@@ -99,16 +101,16 @@ class Account extends React.Component {
             <div className={classes.root}>
                 <Container>
                     <Typography variant='display1'>Profile</Typography>
-                    <Grid container spacing={24} justify='center'>
+                    <Grid container spacing={24}>
                         <Grid item xs={12} md={6}>
                             <TextField
                                 label="Vorname"
                                 value={this.state.values.vname}
                                 fullWidth
+                                margin='normal'
                                 onChange={(event) => {
                                     this.updateValue('vname', event.target.value)
                                 }}
-                                margin="normal"
                                 InputLabelProps={{
                                     FormControlClasses: {
                                         focused: classes.inputLabelFocused,
@@ -127,10 +129,10 @@ class Account extends React.Component {
                                 label="Nachname"
                                 value={this.state.values.nname}
                                 fullWidth
+                                margin='normal'
                                 onChange={(event) => {
                                     this.updateValue('nname', event.target.value)
                                 }}
-                                margin="normal"
                                 InputLabelProps={{
                                     FormControlClasses: {
                                         focused: classes.inputLabelFocused,
@@ -150,10 +152,11 @@ class Account extends React.Component {
                                 value={this.state.values.mail}
                                 type='email'
                                 fullWidth
+                                margin='normal'
                                 onChange={(event) => {
                                     this.updateValue('mail', event.target.value)
                                 }}
-                                margin="normal"
+
                                 InputLabelProps={{
                                     FormControlClasses: {
                                         focused: classes.inputLabelFocused,
@@ -167,6 +170,23 @@ class Account extends React.Component {
                             />
                         </Grid>
 
+                        <Grid item xs={6}>
+                            <Select
+                                value='m'
+                                fullWidth
+                                inputProps={{
+                                    name: 'Gender',
+                                    margin: 'normal',
+                                }}
+                            >
+                                <MenuItem value='m'>Male</MenuItem>
+                                <MenuItem value='f'>Female</MenuItem>
+                                <MenuItem value='o'>Other</MenuItem>
+                            </Select>
+                        </Grid>
+
+
+                        {/* Save Button */}
                         <Grid item xs={12}>
                             <div className={classes.toRight}>
                                 <div className={classes.wrapper}>
