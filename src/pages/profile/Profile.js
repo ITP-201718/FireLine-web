@@ -21,7 +21,11 @@ import Input, { InputLabel } from 'material-ui/Input'
 import { MenuItem } from 'material-ui/Menu'
 import { FormControl, FormHelperText } from 'material-ui/Form'
 import Select from 'material-ui/Select'
+<<<<<<< HEAD
 >>>>>>> Profil Page wurde erweitert
+=======
+import { DatePicker } from 'material-ui-pickers'
+>>>>>>> Finishde Profile. Started AddUser
 
 const styles = theme => ({
     root: {
@@ -81,7 +85,6 @@ const styles = theme => ({
     textField: {
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
-        width: 200,
     },
 });
 
@@ -134,8 +137,13 @@ class Account extends React.Component {
         this.props.showUserMessage('Successfully saved Profile')
     }
 
+    handleDateChange = (date) => {
+        this.setState({ selectedDate: date });
+    }
+
     render() {
         const {classes} = this.props;
+
 
         return (
             <div className={classes.root}>
@@ -281,8 +289,8 @@ class Account extends React.Component {
                         </Grid>
 
                         <Grid item xs={12} md={6}>
-                            <form className={classes.root} autoComplete="off">
-                                <FormControl className={classes.FormControl} fullWidth>
+                            <form className={classes.root} autoComplete="off" >
+                                <FormControl className={classes.FormControl} margin="normal" fullWidth>
                                     <InputLabel htmlFor="sex-simple">Geschlecht</InputLabel>
                                     <Select
                                         value={'m'}
@@ -301,19 +309,20 @@ class Account extends React.Component {
                         </Grid>
 
                         <Grid item xs={12} md={6}>
-                            <form className={classes.container} noValidate>
-                                <TextField
-                                    id="date"
+                            <div className="picker">
+                                <DatePicker
+                                    label="Geburtsdatum"
+                                    format="DD/MM/YYYY"
+                                    placeholder="10/10/2018"
+                                    // handle clearing outside => pass plain array if you are not controlling value outside
+                                    mask={value => (value ? [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/] : [])}
                                     fullWidth
-                                    label="Geburtstag"
-                                    type="date"
-                                    defaultValue="1990-05-24"
-                                    className={classes.textField}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
+                                    margin="normal"
+                                    value={new Date()}
+                                    onChange={this.handleDateChange}
+                                    animateYearScrolling={false}
                                 />
-                            </form>
+                            </div>
                         </Grid>
 
 >>>>>>> Profil Page wurde erweitert

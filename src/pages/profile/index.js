@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import Account_c from './Profile'
+import Profile from './Profile'
 import {setUserMail, setUserVName, setUserNName} from '../../redux/actions/profile';
 import {profileGetMail, profileGetVName, profileGetNName} from '../../redux/selectors/selectors';
 import {call} from '../../general/Autobahn';
@@ -37,6 +37,6 @@ const mapDispatchToProps = (dispatch) => {
 const Account = connect(
     mapStateToProps,
     mapDispatchToProps
-)(Account_c)
+)(Profile)
 
 export default Account

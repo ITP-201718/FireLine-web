@@ -1,6 +1,9 @@
 import React, { Children } from 'react'
 import { createMuiTheme, MuiThemeProvider } from 'material-ui/styles'
 
+import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
+import DateFnsUtils from 'material-ui-pickers/utils/date-fns-utils';
+
 const theme = createMuiTheme({
     palette: {
         primary: {
@@ -19,9 +22,11 @@ const theme = createMuiTheme({
 
 const Theme = (props) => {
     return (
-        <MuiThemeProvider theme={theme}>
-            {Children.only(props.children)}
-        </MuiThemeProvider>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <MuiThemeProvider theme={theme}>
+                {Children.only(props.children)}
+            </MuiThemeProvider>
+        </MuiPickersUtilsProvider>
     )
 }
 

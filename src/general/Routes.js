@@ -6,6 +6,7 @@ import Default from '../components/route_test/Default';
 import {store} from './Redux';
 import {syncHistoryWithStore} from 'react-router-redux';
 import {Router, browserHistory} from 'react-router';
+import AddUser from '../pages/add_user'
 
 const routes = {
     path: '/',
@@ -13,6 +14,7 @@ const routes = {
     indexRoute: { component: Main},
     childRoutes: [
         { path: 'profile', component: Profile },
+        { path: 'add_user', component: AddUser },
         { path: ':pageName', component: Default },
     ]
 }
