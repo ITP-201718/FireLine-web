@@ -11,6 +11,8 @@ import Typography from 'material-ui/Typography'
 import classNames from 'classnames'
 import Avatar from 'material-ui/Avatar'
 import TextField from 'material-ui/TextField'
+import Button from 'material-ui/Button'
+import Save from 'material-ui-icons/Save'
 
 const styles = theme => ({
     row: {
@@ -21,6 +23,14 @@ const styles = theme => ({
         width: 150,
         height: 150,
     },
+    toRight: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+    },
+    rightIcon: {
+        marginLeft: theme.spacing.unit,
+        fontSize: 20,
+    },
 })
 
 class AddUser extends React.Component {
@@ -29,7 +39,7 @@ class AddUser extends React.Component {
         return (
             <div className={classes.root}>
                 <Container>
-                    <Typography variant='display1'>Add User</Typography>
+                    <Typography variant='display1'>Benutzer hinzufügen</Typography>
                     <div className={classes.row}>
                         <Avatar
                             alt="Adelle Charles"
@@ -53,6 +63,46 @@ class AddUser extends React.Component {
                                 fullWidth
                                 margin="normal"
                             />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                label="Benutzername"
+                                fullWidth
+                                margin="normal"
+                            />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                label="E-mail"
+                                type='email'
+                                fullWidth
+                                margin="normal"
+                            />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                label="Passwort"
+                                type='password'
+                                fullWidth
+                                margin="normal"
+                            />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                label="Passwort wiederholen"
+                                type="password"
+                                fullWidth
+                                margin="normal"
+                            />
+                        </Grid>
+
+                        <Grid itme xs={12}>
+                            <div className={classes.toRight}>
+                                <Button variant="raised" color="primary" size="small">
+                                    Hinzufügen
+                                    <Save className={classes.rightIcon} />
+                                </Button>
+                            </div>
                         </Grid>
 
                     </Grid>

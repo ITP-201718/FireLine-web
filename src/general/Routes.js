@@ -7,6 +7,7 @@ import {store} from './Redux';
 import {syncHistoryWithStore} from 'react-router-redux';
 import {Router, browserHistory} from 'react-router';
 import AddUser from '../pages/add_user'
+import AddMitglied from '../pages/add_mitglied'
 
 const routes = {
     path: '/',
@@ -15,6 +16,7 @@ const routes = {
     childRoutes: [
         { path: 'profile', component: Profile },
         { path: 'add_user', component: AddUser },
+        { path: 'add_mitglied', component: AddMitglied },
         { path: ':pageName', component: Default },
     ]
 }

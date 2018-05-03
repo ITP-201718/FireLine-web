@@ -205,7 +205,15 @@ class Account extends React.Component {
                             />
                         </Grid>
 
-                        <Grid item xs={12}>
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                label="Benutzername"
+                                fullWidth
+                                margin="normal"
+                            />
+                        </Grid>
+
+                        <Grid item xs={12} md={6}>
                             <TextField
                                 label="E-mail"
                                 value={this.state.values.mail}
@@ -230,6 +238,7 @@ class Account extends React.Component {
                         </Grid>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
                         <Grid item xs={6}>
                             <Select
                                 value='m'
@@ -248,6 +257,9 @@ class Account extends React.Component {
 
                         {/* Save Button */}
 =======
+=======
+
+>>>>>>> Finished AddUser Started AddMitglied
                         <Grid item xs={12} md={6}>
                             <TextField
                                 label="Password"
@@ -302,7 +314,7 @@ class Account extends React.Component {
                                     >
                                         <MenuItem value={'m'}>Männlich</MenuItem>
                                         <MenuItem value={'f'}>Weiblich</MenuItem>
-                                        <MenuItem value={'o'}>Andere</MenuItem>
+                                        <MenuItem value={'o'}>Anders</MenuItem>
                                     </Select>
                                 </FormControl>
                             </form>
