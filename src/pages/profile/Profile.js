@@ -5,27 +5,16 @@ import Grid from 'material-ui/Grid'
 import TextField from 'material-ui/TextField'
 import Button from 'material-ui/Button'
 import Save from 'material-ui-icons/Save'
-import { CircularProgress } from 'material-ui/Progress'
+import { CircularProgress } from 'material-ui/Progress';
 import Typography from 'material-ui/Typography'
 import Container from '../../components/Container'
-<<<<<<< HEAD
-import Select from 'material-ui/Select'
-import { MenuItem } from 'material-ui/Menu'
-=======
 import Avatar from 'material-ui/Avatar'
 import classNames from 'classnames'
-<<<<<<< HEAD
->>>>>>> Profil Seite geändert
-=======
 import Input, { InputLabel } from 'material-ui/Input'
 import { MenuItem } from 'material-ui/Menu'
 import { FormControl, FormHelperText } from 'material-ui/Form'
 import Select from 'material-ui/Select'
-<<<<<<< HEAD
->>>>>>> Profil Page wurde erweitert
-=======
 import { DatePicker } from 'material-ui-pickers'
->>>>>>> Finishde Profile. Started AddUser
 
 const styles = theme => ({
     root: {
@@ -149,9 +138,6 @@ class Account extends React.Component {
             <div className={classes.root}>
                 <Container>
                     <Typography variant='display1'>Profile</Typography>
-<<<<<<< HEAD
-                    <Grid container spacing={24}>
-=======
                     <div className={classes.row}>
                         <Avatar
                             alt="Adelle Charles"
@@ -161,16 +147,15 @@ class Account extends React.Component {
                     </div>
                     <Grid container spacing={24} justify="">
 
->>>>>>> Profil Seite geändert
                         <Grid item xs={12} md={6}>
                             <TextField
                                 label="Vorname"
                                 value={this.state.values.vname}
                                 fullWidth
-                                margin='normal'
                                 onChange={(event) => {
                                     this.updateValue('vname', event.target.value)
                                 }}
+                                margin="normal"
                                 InputLabelProps={{
                                     FormControlClasses: {
                                         focused: classes.inputLabelFocused,
@@ -189,10 +174,10 @@ class Account extends React.Component {
                                 label="Nachname"
                                 value={this.state.values.nname}
                                 fullWidth
-                                margin='normal'
                                 onChange={(event) => {
                                     this.updateValue('nname', event.target.value)
                                 }}
+                                margin="normal"
                                 InputLabelProps={{
                                     FormControlClasses: {
                                         focused: classes.inputLabelFocused,
@@ -219,11 +204,10 @@ class Account extends React.Component {
                                 value={this.state.values.mail}
                                 type='email'
                                 fullWidth
-                                margin='normal'
                                 onChange={(event) => {
                                     this.updateValue('mail', event.target.value)
                                 }}
-
+                                margin="normal"
                                 InputLabelProps={{
                                     FormControlClasses: {
                                         focused: classes.inputLabelFocused,
@@ -237,29 +221,7 @@ class Account extends React.Component {
                             />
                         </Grid>
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-                        <Grid item xs={6}>
-                            <Select
-                                value='m'
-                                fullWidth
-                                inputProps={{
-                                    name: 'Gender',
-                                    margin: 'normal',
-                                }}
-                            >
-                                <MenuItem value='m'>Male</MenuItem>
-                                <MenuItem value='f'>Female</MenuItem>
-                                <MenuItem value='o'>Other</MenuItem>
-                            </Select>
-                        </Grid>
 
-
-                        {/* Save Button */}
-=======
-=======
-
->>>>>>> Finished AddUser Started AddMitglied
                         <Grid item xs={12} md={6}>
                             <TextField
                                 label="Password"
@@ -337,7 +299,6 @@ class Account extends React.Component {
                             </div>
                         </Grid>
 
->>>>>>> Profil Page wurde erweitert
                         <Grid item xs={12}>
                             <div className={classes.toRight}>
                                 <div className={classes.wrapper}>
