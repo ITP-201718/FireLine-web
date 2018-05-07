@@ -14,7 +14,9 @@ import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableToolbar from './EnhancedTableToolbar'
 import IconButton from 'material-ui/IconButton';
 import Icon from 'material-ui/Icon'
-import {call} from '../../general/Autobahn'
+import Popover from 'material-ui/Popover';
+import TextField from 'material-ui/TextField'
+import {call, isConnected, subscribe, unsubscribe} from '../../general/Autobahn'
 
 const styles = theme => ({
     root: {
@@ -35,7 +37,30 @@ const styles = theme => ({
     tdMin: {
         width: 1,
     },
+    popoverPaper: {
+        marginLeft: 24,
+        marginTop: 2,
+    },
+    popoverTextField: {
+        margin: theme.spacing.unit * 2,
+    },
+    '@keyframes tableViewUpdateAnimation': {
+        '0%': {backgroundColor: theme.palette.primary.main},
+        '100%': {backgroundColor: 'white'}
+    },
+    updateAnimation: {
+        animationName: 'tableViewUpdateAnimation',
+        animationDuration: '325ms'
+    },
 });
+
+const popoverDefaults = {
+    anchorEl: null,
+    label: '',
+    text: '',
+    column: null,
+    row: null,
+}
 
 class TableView extends React.Component {
     constructor(props, context) {
@@ -43,26 +68,77 @@ class TableView extends React.Component {
 
         this.state = {
             order: 'asc',
-            orderBy: '',
+            orderBy: props.sortAtMount ? 'id' : '',
             selected: [],
             data: [],
             page: 0,
             rowsPerPage: 10,
+            popover: popoverDefaults,
+            subscription: null,
         }
     }
 
-    componentDidMount = () => {
+    componentDidMount = async () => {
         this.getData()
+        if (isConnected()) {
+            const {uris} = this.props
+            this.setState({subscription: await subscribe(uris.update, this.handleWampUpdate)})
+        }
+    }
+
+    componentWillUnmount = async () => {
+        if (this.state.subscription && isConnected()) {
+            await unsubscribe(this.state.subscription)
+        }
+    }
+
+    handleWampUpdate = (args, kwargs) => {
+        const {data} = this.state
+        const newRow = kwargs.data
+
+        let newData = [...data]
+        for (let i in newData) {
+            if (newData[i].id === newRow.id) {
+                newData[i] = newRow
+                newData[i].update = true
+                break
+            }
+        }
+        this.setState({data: this.sort(undefined, undefined, newData)})
+        setTimeout(() => {this.removeUpdateAnimation(newRow.id)}, 400)
+    }
+
+    removeUpdateAnimation = (rowId) => {
+        const {data} = this.state
+        let newData = [...data]
+        for(let i in newData) {
+            if(newData[i].id === rowId) {
+                newData[i].update = false
+            }
+        }
+        this.setState({data: this.sort(undefined, undefined, newData)})
+    }
+
+    getColumnById = (id) => {
+        for (let column of this.props.columns) {
+            if (column.id === id) {
+                return column
+            }
+        }
     }
 
     getData = async () => {
+
         // TODO: remove this debugging statement
-        if(this.props.data) {
-            this.setState({data: this.props.data})
+        if (!isConnected() && this.props.data) {
+            this.setState({data: this.sort(undefined, undefined, this.props.data)})
             return
         }
 
-        const uri = this.props.uris.get
+        const {uris} = this.props
+        const {order, orderBy} = this.state
+
+        const uri = uris.get
         let res
         try {
             res = await call(uri, [], {limit: -1})
@@ -70,8 +146,10 @@ class TableView extends React.Component {
             console.error(e)
             return
         }
-        this.setState({data: res.data})
-        this.sort(this.props.order, this.props.orderBy)
+
+        this.setState({
+            data: this.sort(order, orderBy, res.data)
+        })
     }
 
     handleRequestSort = (event, property) => {
@@ -86,13 +164,17 @@ class TableView extends React.Component {
         this.setState({order, orderBy})
     }
 
-    sort = (order, orderBy) => {
+    sort = (order = this.state.order, orderBy = this.state.orderBy, gotData = null) => {
+        const sortData = gotData ? gotData : this.state.data
 
         const data =
             order === 'desc'
-                ? this.state.data.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
-                : this.state.data.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1))
+                ? sortData.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
+                : sortData.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1))
 
+        if (gotData) {
+            return data
+        }
         this.setState({data})
     }
 
@@ -159,11 +241,66 @@ class TableView extends React.Component {
         event.stopPropagation()
     }
 
+    handleInlineChange = (event, column, row) => {
+        if (column.inlineEdit !== true) {
+            return
+        }
+
+        console.log(row)
+
+        event.stopPropagation()
+
+        this.setState({
+            popover: {
+                anchorEl: event.target,
+                label: column.label,
+                text: row[column.id],
+                column,
+                row,
+            }
+        })
+    }
+
+    handleDataUpdate = () => {
+        const {uris} = this.props
+        const {popover} = this.state
+
+        this.handlePopoverClose()
+
+        if (popover.row[popover.column.id] === popover.text) {
+            return
+        }
+
+        call(uris.update, null, {
+            id: popover.row.id,
+            values: {
+                [popover.column.id]: popover.text
+            }
+        })
+    }
+
+    handlePopoverOnKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault()
+            this.handleDataUpdate()
+        }
+    }
+
+    handlePopoverChange = (event) => {
+        let popover = {...this.state.popover}
+        popover.text = event.target.value
+        this.setState({popover})
+    }
+
+    handlePopoverClose = () => {
+        this.setState({popover: popoverDefaults})
+    }
+
     isSelected = id => this.state.selected.indexOf(id) !== -1;
 
     render() {
         const {classes, columns, title, onlyShow, showEdit} = this.props
-        const {data, order, orderBy, selected, rowsPerPage, page} = this.state
+        const {data, order, orderBy, selected, rowsPerPage, page, popover} = this.state
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
         let extraColumns = 1
         showEdit && extraColumns++
@@ -203,6 +340,7 @@ class TableView extends React.Component {
                                     const isSelected = this.isSelected(n.id)
                                     return (
                                         <TableRow
+                                            className={n.update ? classes.updateAnimation : ''}
                                             hover
                                             onClick={event => this.handleClick(event, n.id)}
                                             role='checkbox'
@@ -217,7 +355,8 @@ class TableView extends React.Component {
 
                                             {showEdit &&
                                             <TableCell padding='none' classes={{typeBody: classes.tdMin}}>
-                                                <IconButton arial-label='Edit' onClick={(e) => this.handleEdit(e, n.id)}>
+                                                <IconButton arial-label='Edit'
+                                                            onClick={(e) => this.handleEdit(e, n.id)}>
                                                     <Icon>edit</Icon>
                                                 </IconButton>
                                             </TableCell>}
@@ -229,6 +368,7 @@ class TableView extends React.Component {
                                                         numeric={column.numeric}
                                                         padding={column.disablePadding ? 'none' : 'default'}
                                                         classes={{typeBody: column.min ? classes.tdMin : ''}}
+                                                        onClick={(e) => this.handleInlineChange(e, column, n)}
                                                     >
                                                         {n[column.id]}
                                                     </TableCell>)
@@ -262,6 +402,29 @@ class TableView extends React.Component {
                     onChangePage={this.handleChangePage}
                     onChangeRowsPerPage={this.handleChangeRowsPerPage}
                 />
+                <Popover
+                    open={Boolean(popover.anchorEl)}
+                    anchorEl={popover.anchorEl}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                    }}
+                    classes={{paper: classes.popoverPaper}}
+                    onClose={this.handlePopoverClose}
+                >
+                    {<TextField
+                        autoFocus
+                        className={classes.popoverTextField}
+                        label={popover.label}
+                        value={popover.text}
+                        onChange={this.handlePopoverChange}
+                        onKeyPress={this.handlePopoverOnKeyPress}
+                    />}
+                </Popover>
             </Paper>
         )
     }
@@ -276,9 +439,11 @@ TableView.propTypes = {
     showAdd: PropTypes.bool,
     onAdd: PropTypes.func,
     showEdit: PropTypes.bool,
+    sortAtMount: PropTypes.bool,
 };
 
 TableView.defaultProps = {
+    sortAtMount: false,
     showOnly: false,
     showAdd: false,
     onAdd: () => {

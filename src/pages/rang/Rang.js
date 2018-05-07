@@ -3,12 +3,12 @@ import TableView from '../../components/TableView'
 import Container from '../../components/Container/Container';
 
 const columnData = [
-    { id: 'id', numeric: true, disablePadding: true, label: 'ID', min: true},
-    { id: 'name', numeric: false, disablePadding: false, label: 'Name' },
-    { id: 'kname', numeric: false, disablePadding: false, label: 'Kurzform'}
+    {id: 'id', numeric: true, disablePadding: true, label: 'ID', min: true},
+    {id: 'name', numeric: false, disablePadding: false, label: 'Name', inlineEdit: true},
+    {id: 'kname', numeric: false, disablePadding: false, label: 'Kurzform', inlineEdit: true},
 ];
 
-const data = [{"kname":"OFM","id":1,"name":"Oberfeuerwehrmann"}]
+const data = [{'kname': 'OFM', 'id': 1, 'name': 'Oberfeuerwehrmann'}]
 
 class Rang extends React.Component {
 
@@ -20,10 +20,10 @@ class Rang extends React.Component {
                     columns={columnData}
                     uris={{
                         get: 'rank.get',
-                        delete: 'rank.remove'
+                        delete: 'rank.remove',
+                        update: 'rank.update',
                     }}
                     title='Ränge'
-                    showEdit
                     data={data}
                 />
             </Container>

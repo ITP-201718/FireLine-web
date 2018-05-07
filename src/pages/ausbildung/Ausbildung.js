@@ -2,11 +2,6 @@ import React from 'react'
 import TableView from '../../components/TableView'
 import Container from '../../components/Container/Container';
 
-const columnData = [
-    { id: 'id', numeric: true, disablePadding: true, label: 'ID', min: true},
-    { id: 'name', numeric: false, disablePadding: false, label: 'Name' },
-];
-
 const data = [{'id': 34, 'name': 'Ausbildung 38'}, {'id': 55, 'name': 'Ausbildung 59'}, {
     'id': 35,
     'name': 'Ausbildung 39'
@@ -51,6 +46,11 @@ const data = [{'id': 34, 'name': 'Ausbildung 38'}, {'id': 55, 'name': 'Ausbildun
     'name': 'Ausbildung 31'
 }, {'id': 23, 'name': 'Ausbildung 27'}, {'id': 19, 'name': 'Ausbildung 23'}]
 
+const columnData = [
+    {id: 'id', numeric: true, disablePadding: true, label: 'ID', min: true},
+    {id: 'name', numeric: false, disablePadding: false, label: 'Name', inlineEdit: true},
+];
+
 class Ausbildung extends React.Component {
 
     render() {
@@ -61,11 +61,12 @@ class Ausbildung extends React.Component {
                     columns={columnData}
                     uris={{
                         get: 'education.get',
-                        delete: 'education.remove'
+                        delete: 'education.remove',
+                        update: 'education.update',
                     }}
                     title='Ausbildungen'
-                    showEdit={true}
                     data={data}
+                    sortAtMount
                 />
             </Container>
         )

@@ -63,10 +63,10 @@ class EnhancedTableToolbar extends React.Component {
                     ) : (
                         <div>
                             {<Tooltip title='Refresh'>
-                            <IconButton aria-label='Refresh' onClick={onRefresh}>
-                                <Icon>refresh</Icon>
-                            </IconButton>
-                        </Tooltip> /* TODO: implement search/filter */}
+                                <IconButton aria-label='Refresh' onClick={onRefresh}>
+                                    <Icon>refresh</Icon>
+                                </IconButton>
+                            </Tooltip> /* TODO: implement search/filter */}
                         </div>
                     )}
                 </div>
