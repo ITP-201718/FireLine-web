@@ -1,6 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 import {withStyles} from 'material-ui/styles';
+import Icon from 'material-ui/Icon';
+import IconButton from 'material-ui/IconButton';
+import Checkbox from 'material-ui/Checkbox'
 import Table, {TableBody, TableCell, TableHead, TableRow} from 'material-ui/Table';
 import Paper from 'material-ui/Paper'
 

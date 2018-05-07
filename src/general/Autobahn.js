@@ -60,12 +60,12 @@ export const unsubscribe = async (subscription) => {
     }))
 }
 
-export const call = (procedure, args, kwargs, options) => {
+export const call = (procedure, args=null, kwargs=null, options=null) => {
     errorIfNotConnected()
     return session.call(baseUri + procedure, args, kwargs, options)
 }
 
-export const register = async (procedure, endpoint, options) => {
+export const register = async (procedure, endpoint, options=null) => {
     errorIfNotConnected()
     if(!(procedure in procedures)) {
         procedures[procedure] = [];

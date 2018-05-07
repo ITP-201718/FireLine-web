@@ -13,6 +13,7 @@ import MenuIcon from 'material-ui-icons/Menu';
 import ProfileButton from '../ProfileButton';
 import LoggedIn from '../LoggedIn'
 import UserMessage from '../UserMessage'
+import Ausbildung from '../../pages/ausbildung/Ausbildung';
 
 const drawerWidth = 240;
 
@@ -118,6 +119,11 @@ class MainWrapper extends React.Component {
                     </Typography>
                 </div>
                 <div className={classes.drawerItemsWrapper}>
+                    <Divider/>
+                    <List>
+                        <ListItem button onClick={this.drawerPush('ausbildung')}><ListItemText primary='Ausbildungen'/></ListItem>
+                        <ListItem button onClick={this.drawerPush('rang')}><ListItemText primary='Ränge'/></ListItem>
+                    </List>
                     <Divider/>
                     <List>
                         <ListItem button onClick={this.drawerPush('first')}><ListItemText primary="First"/></ListItem>
