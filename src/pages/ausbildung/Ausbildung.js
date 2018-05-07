@@ -54,7 +54,6 @@ const data = [{'id': 34, 'name': 'Ausbildung 38'}, {'id': 55, 'name': 'Ausbildun
 class Ausbildung extends React.Component {
 
     render() {
-        const {classes} = this.props
 
         return (
             <Container>

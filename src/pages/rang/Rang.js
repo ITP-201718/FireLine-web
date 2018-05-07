@@ -13,7 +13,6 @@ const data = [{"kname":"OFM","id":1,"name":"Oberfeuerwehrmann"}]
 class Rang extends React.Component {
 
     render() {
-        const {classes} = this.props
 
         return (
             <Container>

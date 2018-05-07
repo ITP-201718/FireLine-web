@@ -119,7 +119,7 @@ class TableView extends React.Component {
     }
 
     delete = (id) => {
-        const {data, selected} = this.state
+        const {data} = this.state
         let dataIndex = -1
         for (let i in data) {
             if (data[i].id === id) {
@@ -138,7 +138,7 @@ class TableView extends React.Component {
 
     handleDelete = () => {
         const {uris} = this.props
-        const {selected, data} = this.state
+        const {selected} = this.state
         for (let id of selected) {
             call(uris.delete, null, {id})
                 .then(() => {

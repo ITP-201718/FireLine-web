@@ -6,16 +6,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {withStyles} from 'material-ui/styles'
 import Grid from 'material-ui/Grid'
-import Container from "../../components/Container/Container";
+import Container from '../../components/Container/Container';
 import Typography from 'material-ui/Typography'
 import classNames from 'classnames'
 import Avatar from 'material-ui/Avatar'
 import TextField from 'material-ui/TextField'
-import Button from 'material-ui/Button'
-import Save from 'material-ui-icons/Save'
-import Input, {InputLabel} from 'material-ui/Input'
+import {InputLabel} from 'material-ui/Input'
 import {MenuItem} from 'material-ui/Menu'
-import {FormControl, FormHelperText} from 'material-ui/Form'
+import {FormControl} from 'material-ui/Form'
 import Select from 'material-ui/Select'
 import {DatePicker} from 'material-ui-pickers'
 
@@ -37,6 +35,7 @@ const styles = theme => ({
         fontSize: 20,
     },
 })
+
 class AddMitglied extends React.Component {
 
     handleChange = event => {
@@ -128,7 +127,7 @@ class AddMitglied extends React.Component {
                             </form>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <form className={classes.root} autoComplete="off" >
+                            <form className={classes.root} autoComplete="off">
                                 <FormControl className={classes.FormControl} margin="normal" fullWidth>
                                     <InputLabel htmlFor="sex-simple">Geschlecht</InputLabel>
                                     <Select
@@ -172,8 +171,12 @@ class AddMitglied extends React.Component {
                     </Grid>
                 </Container>
             </div>
-    )
+        )
     }
-    }
+}
 
-    export default withStyles(styles)(AddMitglied)
+AddMitglied.propTypes = {
+    classes: PropTypes.object.isRequired,
+}
+
+export default withStyles(styles)(AddMitglied)

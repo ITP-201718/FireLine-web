@@ -13,7 +13,6 @@ import MenuIcon from 'material-ui-icons/Menu';
 import ProfileButton from '../ProfileButton';
 import LoggedIn from '../LoggedIn'
 import UserMessage from '../UserMessage'
-import Ausbildung from '../../pages/ausbildung/Ausbildung';
 
 const drawerWidth = 240;
 

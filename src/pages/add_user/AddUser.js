@@ -112,4 +112,8 @@ class AddUser extends React.Component {
     }
 }
 
+AddUser.propTypes = {
+    classes: PropTypes.object.isRequired,
+}
+
 export default withStyles(styles)(AddUser)
