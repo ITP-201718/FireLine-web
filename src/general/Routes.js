@@ -10,6 +10,7 @@ import AddUser from '../pages/add_user'
 import AddMitglied from '../pages/add_mitglied'
 import Ausbildung from '../pages/ausbildung'
 import Rang from '../pages/rang'
+import AddEinsatz from '../pages/add_einsatz'
 
 const routes = {
     path: '/',
@@ -19,6 +20,7 @@ const routes = {
         {path: 'profile', component: Profile},
         {path: 'add_user', component: AddUser},
         {path: 'add_mitglied', component: AddMitglied},
+        {path: 'add_einsatz', component: AddEinsatz},
         {path: 'ausbildung', component: Ausbildung},
         {path: 'rang', component: Rang},
         {path: ':pageName', component: Default},
