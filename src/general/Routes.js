@@ -17,6 +17,7 @@ import Geraetegrp from '../pages/gerategrp'
 import Fahrzeug from '../pages/fahrzeug'
 
 import Mitglied, {AddMitglied, EditMitglied} from '../pages/mitglied'
+import AddEinsatz from '../pages/add_einsatz'
 
 const routes = {
     path: '/',
@@ -24,6 +25,7 @@ const routes = {
     indexRoute: {component: Main},
     childRoutes: [
         {path: 'profile', component: Profile},
+        {path: 'add_einsatz', component: AddEinsatz},
         {path: 'ausbildung', component: Ausbildung},
         {
             path: 'mitglied',
