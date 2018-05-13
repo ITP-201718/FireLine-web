@@ -1,5 +1,6 @@
 import {
     SET_LOGGED_IN,
+    PROFILE_SET,
     PROFILE_SET_USER_VNAME,
     PROFILE_SET_USER_NNAME,
     PROFILE_SET_USER_MAIL,
@@ -11,6 +12,13 @@ export const setLoggedIn = (loggedIn) => {
     return {
         type: SET_LOGGED_IN,
         loggedIn
+    }
+}
+
+export const setUserProfile = (profile) => {
+    return {
+        type: PROFILE_SET,
+        profile,
     }
 }
 

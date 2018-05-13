@@ -20,8 +20,9 @@ class Rang extends React.Component {
                     columns={columnData}
                     uris={{
                         get: 'rank.get',
-                        delete: 'rank.remove',
+                        delete: 'rank.delete',
                         update: 'rank.update',
+                        create: 'rank.create',
                     }}
                     title='Ränge'
                     data={data}

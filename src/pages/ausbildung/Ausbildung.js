@@ -61,12 +61,17 @@ class Ausbildung extends React.Component {
                     columns={columnData}
                     uris={{
                         get: 'education.get',
-                        delete: 'education.remove',
+                        delete: 'education.delete',
                         update: 'education.update',
+                        create: 'education.create',
                     }}
                     title='Ausbildungen'
                     data={data}
                     sortAtMount
+                    showAdd
+                    onAdd={() => {
+                        console.log('add')
+                    }}
                 />
             </Container>
         )

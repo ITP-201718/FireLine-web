@@ -85,21 +85,26 @@ class Account extends React.Component {
 
     constructor(props) {
         super(props)
-        const { vname, nname, mail, setvname, setnname, setmail } = props
+        const { profile } = props
         this.state = {
-            updateCalls: {
-                vname: setvname,
-                nname: setnname,
-                userMail: setmail,
-            },
             values: {
-                vname,
-                nname,
-                mail
+                ...profile,
+                birthday: new Date(),
             },
             changed: [],
             saving: false,
         }
+    }
+
+    /**
+     * Get value out of the values
+     * @param {string} name Name of the value to get
+     * @param {*} def Default value. Defaults to null
+     * @returns {*} The value it is set to
+     */
+    getValue = (name, def = null) => {
+        let {values} = this.state
+        return name in values ? values[name] : def
     }
 
     updateValue = (name, value) => {
@@ -118,21 +123,18 @@ class Account extends React.Component {
         }
 
         this.setState({saving: true})
+        let updateVals = {}
         for(let i in this.state.changed) {
             let input = this.state.changed[i]
-            await this.state.updateCalls[input](this.state.values[input])
+            updateVals[input] = this.state.values[input]
         }
+        await this.props.setProfile(updateVals)
         this.setState({saving: false, changed: []})
         this.props.showUserMessage('Successfully saved Profile')
     }
 
-    handleDateChange = (date) => {
-        this.setState({ selectedDate: date });
-    }
-
     render() {
-        const {classes} = this.props;
-
+        const {classes, gravatarHash} = this.props;
 
         return (
             <div className={classes.root}>
@@ -141,19 +143,19 @@ class Account extends React.Component {
                     <div className={classes.row}>
                         <Avatar
                             alt="Adelle Charles"
-                            src="https://www.gravatar.com/avatar/43b7f85604aaba589180c506ce4f1d06?d=identicon&s=128"
+                            src={'https://www.gravatar.com/avatar/' + gravatarHash + '?d=identicon&s=128'}
                             className={classNames(classes.avatar, classes.bigAvatar)}
                         />
                     </div>
-                    <Grid container spacing={24} justify="">
+                    <Grid container spacing={24} justify="center">
 
                         <Grid item xs={12} md={6}>
                             <TextField
                                 label="Vorname"
-                                value={this.state.values.vname}
+                                value={this.getValue('first_name', 'Unknown')}
                                 fullWidth
                                 onChange={(event) => {
-                                    this.updateValue('vname', event.target.value)
+                                    this.updateValue('first_name', event.target.value)
                                 }}
                                 margin="normal"
                                 InputLabelProps={{
@@ -172,10 +174,10 @@ class Account extends React.Component {
                         <Grid item xs={12} md={6}>
                             <TextField
                                 label="Nachname"
-                                value={this.state.values.nname}
+                                value={this.getValue('last_name', 'Unknown')}
                                 fullWidth
                                 onChange={(event) => {
-                                    this.updateValue('nname', event.target.value)
+                                    this.updateValue('last_name', event.target.value)
                                 }}
                                 margin="normal"
                                 InputLabelProps={{
@@ -195,18 +197,19 @@ class Account extends React.Component {
                                 label="Benutzername"
                                 fullWidth
                                 margin="normal"
+                                value={this.getValue('username', 'Unknown')}
+                                onChange={(event) => {this.setState('username', event.target.value)}}
+                                disabled
                             />
                         </Grid>
 
                         <Grid item xs={12} md={6}>
                             <TextField
                                 label="E-mail"
-                                value={this.state.values.mail}
+                                value={this.getValue('mail', 'Unknown')}
                                 type='email'
                                 fullWidth
-                                onChange={(event) => {
-                                    this.updateValue('mail', event.target.value)
-                                }}
+                                onChange={(event) => {this.updateValue('mail', event.target.value)}}
                                 margin="normal"
                                 InputLabelProps={{
                                     FormControlClasses: {
@@ -221,9 +224,12 @@ class Account extends React.Component {
                             />
                         </Grid>
 
-
+                        {/* Password */}
                         <Grid item xs={12} md={6}>
                             <TextField
+                                disabled
+                                value={this.getValue('password', '')}
+                                onChange={(event) => {this.updateValue('password', event.target.value)}}
                                 label="Password"
                                 id="pass"
                                 fullWidth
@@ -242,8 +248,12 @@ class Account extends React.Component {
                             />
                         </Grid>
 
+                        {/* Password validate */}
                         <Grid item xs={12} md={6}>
                             <TextField
+                                disabled
+                                value={this.getValue('password_confirm', '')}
+                                onChange={(event) => {this.updateValue('password_confirm', event.target.value)}}
                                 label="Passwort wiederholen"
                                 id="pass_again"
                                 fullWidth
@@ -267,8 +277,9 @@ class Account extends React.Component {
                                 <FormControl className={classes.FormControl} margin="normal" fullWidth>
                                     <InputLabel htmlFor="sex-simple">Geschlecht</InputLabel>
                                     <Select
-                                        value={'m'}
-                                        onChange={this.handleChange}
+                                        disabled
+                                        value={this.getValue('gender', '')}
+                                        onChange={(event) => {this.updateValue('gender', event.target.value)}}
                                         inputProps={{
                                             name: 'sex',
                                             id: 'sex-simple'
@@ -285,6 +296,7 @@ class Account extends React.Component {
                         <Grid item xs={12} md={6}>
                             <div className="picker">
                                 <DatePicker
+                                    disabled
                                     label="Geburtsdatum"
                                     format="DD/MM/YYYY"
                                     placeholder="10/10/2018"
@@ -292,8 +304,9 @@ class Account extends React.Component {
                                     mask={value => (value ? [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/] : [])}
                                     fullWidth
                                     margin="normal"
-                                    value={new Date()}
-                                    onChange={this.handleDateChange}
+                                    value={this.getValue('birthday', new Date())}
+                                    onChange={(date) => {this.updateValue('birthday', date)}}
+                                    openToYearSelection={true}
                                     animateYearScrolling={false}
                                 />
                             </div>
@@ -319,86 +332,6 @@ class Account extends React.Component {
 
                     </Grid>
                 </Container>
-
-                {/*<Grid container spacing={24} justify='center'>
-                    <Grid item xs={12} sm={11} md={12} lg={10} xl={8}>
-                        <TextField
-                            label="Vorname"
-                            value={this.state.values.vname}
-                            onChange={(event) => {
-                                this.updateValue('vname', event.target.value)
-                            }}
-                            margin="normal"
-                            InputLabelProps={{
-                                FormControlClasses: {
-                                    focused: classes.inputLabelFocused,
-                                }
-                            }}
-                            InputProps={{
-                                classes: {
-                                    inkbar: classes.inputInkbar,
-                                }
-                            }}
-                        />
-                        <TextField
-                            label="Nachname"
-                            value={this.state.values.nname}
-                            onChange={(event) => {
-                                this.updateValue('nname', event.target.value)
-                            }}
-                            margin="normal"
-                            InputLabelProps={{
-                                FormControlClasses: {
-                                    focused: classes.inputLabelFocused,
-                                }
-                            }}
-                            InputProps={{
-                                classes: {
-                                    inkbar: classes.inputInkbar,
-                                }
-                            }}
-                            fullWidth
-                        />
-                    </Grid>
-                    <Grid item>
-                        <TextField
-                            label="E-Mail"
-                            value={this.state.values.mail}
-                            onChange={(event) => {
-                                this.updateValue('userMail', event.target.value)
-                            }}
-                            margin="normal"
-                            InputLabelProps={{
-                                FormControlClasses: {
-                                    focused: classes.inputLabelFocused,
-                                }
-                            }}
-                            InputProps={{
-                                classes: {
-                                    inkbar: classes.inputInkbar,
-                                }
-                            }}
-                            fullWidth
-                        />
-                    </Grid>
-                    <Grid>
-                        <div className={classes.toRight}>
-                            <div className={classes.wrapper}>
-                                <Button variant="raised" color='primary' size='small'
-                                        onClick={this.save} disabled={this.state.saving}>
-                                    Save
-                                    <Save className={classes.rightIcon} />
-                                </Button>
-                                {this.state.saving &&
-                                <CircularProgress
-                                    className={classes.progress}
-                                    //style={{color: theme.palette.text.disabled}}
-                                    size={24}/>
-                                }
-                            </div>
-                        </div>
-                    </Grid>
-                </Grid>*/}
             </div>
         )
     }
@@ -407,6 +340,9 @@ class Account extends React.Component {
 Account.propTypes = {
     classes: PropTypes.object,
     showUserMessage: PropTypes.func.isRequired,
+    setProfile: PropTypes.func.isRequired,
+    profile: PropTypes.object.isRequired,
+    gravatarHash: PropTypes.string,
 }
 
 export default withStyles(styles)(Account)

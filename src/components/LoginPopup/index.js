@@ -12,7 +12,7 @@ import {
     loginPopupSetOpen, loginPopupSetErrorMsg, loginPopupSetError,
 } from '../../redux/actions/loginPopup';
 import {call, getUserErrorMessage, tryUserAuth} from '../../general/Autobahn';
-import {setLoggedIn, setUserMail, setUserVName, setUserNName} from '../../redux/actions/profile';
+import {setLoggedIn, setUserProfile} from '../../redux/actions/profile';
 
 const mapStateToProps = (state) => {
     return {
@@ -43,19 +43,9 @@ function connectToWs(user, pw) {
                 dispatch(loginPopupSetError(false))
                 dispatch(setLoggedIn(true))
 
-                call('profile.get_mail').then((res) => {
-                    dispatch(setUserMail(res))
+                call('profile.get').then((res) => {
+                    dispatch(setUserProfile(res))
                 })
-                call('profile.get_vname').then((res) => {
-                    dispatch(setUserVName(res))
-                })
-                call('profile.get_nname').then((res) => {
-                    dispatch(setUserNName(res))
-                })
-
-                /*res.session.call('io.fireline.api.profile.get_mail').then((res) => {
-                    dispatch(setUserMail(res))
-                })*/
             })
             .catch(error => {
                 dispatch(loginPopupSetErrorMsg(getUserErrorMessage(error)))

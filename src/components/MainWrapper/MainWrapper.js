@@ -59,7 +59,6 @@ const styles = theme => {
         content: {
             flexGrow: 1,
             backgroundColor: theme.palette.background.default,
-            padding: theme.spacing.unit * 3,
             "@media (min-width:0px) and (orientation: landscape)": {
                 height: 'calc(100vh - ' + (theme.spacing.unit * 3 * 2 + theme.mixins.toolbar["@media (min-width:0px) and (orientation: landscape)"].minHeight) + 'px)',
                 marginTop: theme.mixins.toolbar["@media (min-width:0px) and (orientation: landscape)"].minHeight,
@@ -67,10 +66,12 @@ const styles = theme => {
             [theme.breakpoints.up('sm')]: {
                 height: 'calc(100vh - ' + (theme.spacing.unit * 3 * 2 + theme.mixins.toolbar[theme.breakpoints.up('sm')].minHeight) + 'px)',
                 marginTop: theme.mixins.toolbar[theme.breakpoints.up('sm')].minHeight,
+                padding: theme.spacing.unit * 3,
             },
             width: 'calc(100% - ' + theme.spacing.unit * 3 * 2 + 'px)',
             height: 'calc(100vh - ' + (theme.spacing.unit * 3 * 2 + theme.mixins.toolbar.minHeight) + 'px)',
             marginTop: theme.mixins.toolbar.minHeight,
+            padding: theme.spacing.unit,
             overflowY: 'auto',
         },
         title: {

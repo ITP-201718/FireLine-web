@@ -44,20 +44,24 @@ export const profileGetLoggedIn = (state) => {
 }
 
 export const profileGetVName = (state) => {
-    return useDefault(state.getIn(['profile', 'vname']), 'Unknown')
+    return useDefault(state.getIn(['profile', 'profile', 'first_name']), 'Unknown')
 }
 
 export const profileGetNName = (state) => {
-    return useDefault(state.getIn(['profile', 'nname']), 'Unknown')
+    return useDefault(state.getIn(['profile', 'profile', 'last_name']), 'Unknown')
 }
 
 export const profileGetName = (state) => {
-    let name = useDefault(state.getIn(['profile', 'vname']), '') + ' ' + useDefault(state.getIn(['profile', 'nname']), '')
+    let name = useDefault(profileGetVName(state), '') + ' ' + useDefault(profileGetNName(state), '')
     return name.trim() === '' ? 'Unknown User' : name
 }
 
+export const profileGet = (state) => {
+    return state.getIn(['profile', 'profile']).toJS()
+}
+
 export const profileGetMail = (state) => {
-    return useDefault(state.getIn(['profile', 'mail']), '')
+    return useDefault(state.getIn(['profile', 'profile', 'mail']), '')
 }
 
 export const profileMd5Hash = (state) => {

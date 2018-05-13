@@ -1,35 +1,26 @@
 import { connect } from 'react-redux'
 import Profile from './Profile'
-import {setUserMail, setUserVName, setUserNName} from '../../redux/actions/profile';
-import {profileGetMail, profileGetVName, profileGetNName} from '../../redux/selectors/selectors';
-import {call} from '../../general/Autobahn';
+import {profileGet, profileMd5Hash} from '../../redux/selectors/selectors';
 import {setUserMessageMessage, setUserMessageOpen} from '../../redux/actions/userMessage';
+import {call} from '../../general/Autobahn'
+import {setUserProfile} from '../../redux/actions/profile';
 
 const mapStateToProps = (state) => {
     return {
-        mail: profileGetMail(state),
-        vname: profileGetVName(state),
-        nname: profileGetNName(state),
+        profile: profileGet(state),
+        gravatarHash: profileMd5Hash(state),
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setvname: async (value) => {
-            await call('profile.set_vname', [], {vname: value})
-            dispatch(setUserVName(value))
-        },
-        setnname: async (value) => {
-            await call('profile.set_nname', [], {nname: value})
-            dispatch(setUserNName(value))
-        },
-        setmail: async (value) => {
-            await call('profile.set_mail', [], {mail: value})
-            dispatch(setUserMail(value))
-        },
         showUserMessage: (message) => {
             dispatch(setUserMessageMessage(message))
             dispatch(setUserMessageOpen(true))
+        },
+        setProfile: async (profile) => {
+            await call('profile.update', [], {values: profile})
+            dispatch(setUserProfile(profile))
         }
     }
 }

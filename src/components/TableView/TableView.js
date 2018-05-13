@@ -12,11 +12,13 @@ import Checkbox from 'material-ui/Checkbox';
 import Typography from 'material-ui/Typography'
 import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableToolbar from './EnhancedTableToolbar'
+import Button from 'material-ui/Button'
 import IconButton from 'material-ui/IconButton';
 import Icon from 'material-ui/Icon'
 import Popover from 'material-ui/Popover';
 import TextField from 'material-ui/TextField'
 import {call, isConnected, subscribe, unsubscribe} from '../../general/Autobahn'
+import AutoAdd from './AutoAdd';
 
 const styles = theme => ({
     root: {
@@ -52,6 +54,11 @@ const styles = theme => ({
         animationName: 'tableViewUpdateAnimation',
         animationDuration: '325ms'
     },
+    fab: {
+        position: 'absolute',
+        right: theme.spacing.unit * 4,
+        bottom: theme.spacing.unit * 2,
+    }
 });
 
 const popoverDefaults = {
@@ -74,7 +81,8 @@ class TableView extends React.Component {
             page: 0,
             rowsPerPage: 10,
             popover: popoverDefaults,
-            subscription: null,
+            subscriptions: null,
+            autoAddOpen: false,
         }
     }
 
@@ -82,14 +90,27 @@ class TableView extends React.Component {
         this.getData()
         if (isConnected()) {
             const {uris} = this.props
-            this.setState({subscription: await subscribe(uris.update, this.handleWampUpdate)})
+            let subscriptions = {
+                update: await subscribe(uris.update, this.handleWampUpdate),
+                create: await subscribe(uris.create, this.handleWampCreate),
+                delete: await subscribe(uris.delete, this.handleWampDelete),
+            }
+
+            this.setState({subscriptions})
         }
     }
 
     componentWillUnmount = async () => {
-        if (this.state.subscription && isConnected()) {
-            await unsubscribe(this.state.subscription)
+        if (this.state.subscriptions && isConnected()) {
+            const {subscriptions} = this.state
+            await unsubscribe(subscriptions.delete)
+            await unsubscribe(subscriptions.create)
+            await unsubscribe(subscriptions.update)
         }
+    }
+
+    setAutoAddOpen = (state) => {
+        this.setState({autoAddOpen: state})
     }
 
     handleWampUpdate = (args, kwargs) => {
@@ -105,14 +126,34 @@ class TableView extends React.Component {
             }
         }
         this.setState({data: this.sort(undefined, undefined, newData)})
-        setTimeout(() => {this.removeUpdateAnimation(newRow.id)}, 400)
+        setTimeout(() => {
+            this.removeUpdateAnimation(newRow.id)
+        }, 400)
+    }
+
+    handleWampCreate = (args, kwargs) => {
+        const {data} = this.state
+        const newRow = kwargs.data
+        newRow.update = true
+        let newData = [...data]
+        newData.push(newRow)
+
+        this.setState({data: this.sort(undefined, undefined, newData)})
+        setTimeout(() => {
+            this.removeUpdateAnimation(newRow.id)
+        }, 400)
+    }
+
+    handleWampDelete = (args, kwargs) => {
+        const newRow = kwargs.data
+        this.delete(newRow.id)
     }
 
     removeUpdateAnimation = (rowId) => {
         const {data} = this.state
         let newData = [...data]
-        for(let i in newData) {
-            if(newData[i].id === rowId) {
+        for (let i in newData) {
+            if (newData[i].id === rowId) {
                 newData[i].update = false
             }
         }
@@ -223,9 +264,6 @@ class TableView extends React.Component {
         const {selected} = this.state
         for (let id of selected) {
             call(uris.delete, null, {id})
-                .then(() => {
-                    this.delete(id)
-                })
         }
     }
 
@@ -299,7 +337,7 @@ class TableView extends React.Component {
     isSelected = id => this.state.selected.indexOf(id) !== -1;
 
     render() {
-        const {classes, columns, title, onlyShow, showEdit} = this.props
+        const {classes, columns, title, onlyShow, showEdit, showAdd, onAdd, uris, autoAddTitle, autoAddText} = this.props
         const {data, order, orderBy, selected, rowsPerPage, page, popover} = this.state
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
         let extraColumns = 1
@@ -425,6 +463,30 @@ class TableView extends React.Component {
                         onKeyPress={this.handlePopoverOnKeyPress}
                     />}
                 </Popover>
+                {showAdd && (
+                    <Button
+                        variant='fab'
+                        color='primary'
+                        aria-label='add'
+                        className={classes.fab}
+                        onClick={(e) => {onAdd(e); this.setAutoAddOpen(true)}}
+                    >
+                        <Icon>add</Icon>
+                    </Button>
+                )}
+                {(autoAddTitle) && (
+                    <AutoAdd
+                        open={this.state.autoAddOpen}
+                        columns={columns}
+                        uris={uris}
+                        title={autoAddTitle}
+                        text={autoAddText}
+                        onClose={() => {this.setAutoAddOpen(false)}}
+                    />
+                )}
+                <div>
+                    {this.props.children}
+                </div>
             </Paper>
         )
     }
@@ -440,6 +502,8 @@ TableView.propTypes = {
     onAdd: PropTypes.func,
     showEdit: PropTypes.bool,
     sortAtMount: PropTypes.bool,
+    autoAddTitle: PropTypes.string,
+    autoAddText: PropTypes.string
 };
 
 TableView.defaultProps = {
@@ -449,6 +513,7 @@ TableView.defaultProps = {
     onAdd: () => {
     },
     showEdit: false,
+    autoAddTitle: 'Neues erstellen'
 }
 
 export default withStyles(styles)(TableView)
