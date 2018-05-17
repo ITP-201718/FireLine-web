@@ -43,6 +43,7 @@ const routes = {
         {path: 'einsatz', component: Einsatz},
         {path: 'geraetegrp', component: Geraetegrp},
         {path: 'fahrzeug', component: Fahrzeug},
+        {path: 'add_fahrt', component: AddFahrt},
         {path: ':pageName', component: Default},
     ]
 }
