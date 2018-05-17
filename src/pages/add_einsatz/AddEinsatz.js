@@ -15,7 +15,9 @@ import {MenuItem} from 'material-ui/Menu'
 import {FormControl} from 'material-ui/Form'
 import Select from 'material-ui/Select'
 import {DatePicker} from 'material-ui-pickers'
-import { TimePicker } from 'material-ui-pickers';
+import { TimePicker } from 'material-ui-pickers'
+import Button from 'material-ui/Button'
+import Save from 'material-ui-icons/Save'
 
 const styles = theme => ({
     row: {
@@ -23,8 +25,8 @@ const styles = theme => ({
         justifyContent: 'center',
     },
     toRight: {
-        display: 'felx',
-        justifyContent: 'flex-end'
+        display: 'flex',
+        justifyContent: 'flex-end',
     },
     rightIcon: {
         marginLeft: theme.spacing.unit,
@@ -156,6 +158,16 @@ class AddEinsatz extends React.Component {
                                 rows={4}
                                 rowsMax={4}
                             />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <div className={classes.toRight}>
+                                <div className={classes.wrapper}>
+                                    <Button variant="raised" color='primary' size='small'>
+                                        Save
+                                        <Save className={classes.rightIcon} />
+                                    </Button>
+                                </div>
+                            </div>
                         </Grid>
                     </Grid>
                 </Container>

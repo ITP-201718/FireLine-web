@@ -23,6 +23,7 @@ const routes = {
         {path: 'add_einsatz', component: AddEinsatz},
         {path: 'ausbildung', component: Ausbildung},
         {path: 'rang', component: Rang},
+        {path: 'add_fahrt', component: AddFahrt},
         {path: ':pageName', component: Default},
     ]
 }

@@ -16,6 +16,8 @@ import {MenuItem} from 'material-ui/Menu'
 import {FormControl} from 'material-ui/Form'
 import Select from 'material-ui/Select'
 import {DatePicker} from 'material-ui-pickers'
+import Button from 'material-ui/Button'
+import Save from 'material-ui-icons/Save'
 
 const styles = theme => ({
     row: {
@@ -167,6 +169,16 @@ class AddMitglied extends React.Component {
                                     </Select>
                                 </FormControl>
                             </form>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <div className={classes.toRight}>
+                                <div className={classes.wrapper}>
+                                    <Button variant="raised" color='primary' size='small'>
+                                        Save
+                                        <Save className={classes.rightIcon} />
+                                    </Button>
+                                </div>
+                            </div>
                         </Grid>
                     </Grid>
                 </Container>

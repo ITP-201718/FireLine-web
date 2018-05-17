@@ -99,7 +99,7 @@ class AddUser extends React.Component {
                         <Grid itme xs={12}>
                             <div className={classes.toRight}>
                                 <Button variant="raised" color="primary" size="small">
-                                    Hinzufügen
+                                    Save
                                     <Save className={classes.rightIcon} />
                                 </Button>
                             </div>
