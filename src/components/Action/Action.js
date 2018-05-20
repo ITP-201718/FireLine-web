@@ -66,12 +66,13 @@ const withAction = (options = {}) => Component => {
                 await call(options.uri, [], sendObj)
             } catch(e) {
                 if(e.error === 'io.fireline.error.validate') {
-                    //console.log(e.args[0])
                     this.setState({errors: e.args[0]})
                 } else {
                     console.error(e)
                 }
+                return
             }
+            typeof options.onSuccess === 'function' && options.onSuccess(values)
         }
 
         render() {

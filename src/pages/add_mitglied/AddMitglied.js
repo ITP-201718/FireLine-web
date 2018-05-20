@@ -19,6 +19,8 @@ import withAction from '../../components/Action'
 import {format} from 'date-fns'
 import md5 from 'md5'
 import FormElement from '../../components/FormElement'
+import {store} from '../../general/Redux';
+import {push} from 'react-router-redux'
 
 const styles = theme => ({
     row: {
@@ -41,6 +43,9 @@ const styles = theme => ({
 const actionConfig = {
     actionProp: true,
     uri: 'member.create',
+    onSuccess: () => {
+        store.dispatch(push('/mitglied'))
+    },
     defaultValues: {
         username: '',
         mail: '',
