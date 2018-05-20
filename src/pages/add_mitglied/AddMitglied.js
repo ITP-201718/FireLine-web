@@ -11,11 +11,14 @@ import Typography from 'material-ui/Typography'
 import classNames from 'classnames'
 import Avatar from 'material-ui/Avatar'
 import TextField from 'material-ui/TextField'
-import {InputLabel} from 'material-ui/Input'
+import Button from 'material-ui/Button'
+import Icon from 'material-ui/Icon'
 import {MenuItem} from 'material-ui/Menu'
-import {FormControl} from 'material-ui/Form'
-import Select from 'material-ui/Select'
 import {DatePicker} from 'material-ui-pickers'
+import withAction from '../../components/Action'
+import {format} from 'date-fns'
+import md5 from 'md5'
+import FormElement from '../../components/FormElement'
 
 const styles = theme => ({
     row: {
@@ -32,18 +35,41 @@ const styles = theme => ({
     },
     rightIcon: {
         marginLeft: theme.spacing.unit,
-        fontSize: 20,
     },
 })
 
+const actionConfig = {
+    actionProp: true,
+    uri: 'member.create',
+    defaultValues: {
+        username: '',
+        mail: '',
+        first_name: '',
+        last_name: '',
+        password: '',
+        password_confirm: '',
+        sbuergerschaft: 'at',
+        birthday: null,
+        zugehoerigkeit: '',
+        gender: '',
+        rang: '',
+    },
+    formaters: {
+        birthday: (val) => {
+            return val instanceof Date ? format(val, 'YYYY-MM-DD') : val
+        },
+        mail: (val) => {
+            return val === '' ? null : val
+        }
+    }
+}
+
 class AddMitglied extends React.Component {
 
-    handleChange = event => {
-        this.setState({[event.target.name]: event.target.value});
-    };
-
     render() {
-        const {classes} = this.props
+        const {classes, actionProp} = this.props
+        const {getValue, executeAction} = actionProp
+
         return (
             <div className={classes.root}>
                 <Container>
@@ -51,111 +77,179 @@ class AddMitglied extends React.Component {
                     <div className={classes.row}>
                         <Avatar
                             alt="Blank"
-                            src="/img/default_user.png"
+                            src={getValue('mail') === '' ? '/img/default_user.png' : 'https://www.gravatar.com/avatar/' + md5(getValue('mail')) + '?d=identicon&s=128'}
                             className={classNames(classes.avatar, classes.bigAvatar)}
                         />
                     </div>
-                    <Grid container spacing={24} justify="">
+
+                    <Grid container spacing={24}>
+
                         <Grid item xs={12} md={6}>
-                            <TextField
-                                label="Vorname"
-                                fullWidth
-                                margin="normal"
-                            />
+                            <FormElement
+                                name='username'
+                                actionProp={actionProp}
+                            >
+                                <TextField
+                                    label="Benutzername"
+                                    fullWidth
+                                    margin="normal"
+                                />
+                            </FormElement>
                         </Grid>
+
                         <Grid item xs={12} md={6}>
-                            <TextField
-                                label="Nachname"
-                                fullWidth
-                                margin="normal"
-                            />
+                            <FormElement
+                                name='mail'
+                                actionProp={actionProp}
+                            >
+                                <TextField
+                                    label="Email"
+                                    fullWidth
+                                    margin="normal"
+                                />
+                            </FormElement>
                         </Grid>
+
                         <Grid item xs={12} md={6}>
-                            <form className={classes.root} autoComplete="off">
-                                <FormControl className={classes.FormControl} margin="normal" fullWidth>
-                                    <InputLabel htmlFor="sbs-simple">Staatsbürgerschaft</InputLabel>
-                                    <Select
-                                        value={'oe'}
-                                        onChange={this.handleChange}
-                                        unputProps={{
-                                            name: 'sbs',
-                                            id: 'sbs-simple'
-                                        }}
-                                    >
-                                        <MenuItem value={'oe'}>Österreich</MenuItem>
-                                        <MenuItem value={'de'}>Deutschland</MenuItem>
-                                        <MenuItem value={'it'}>Italien</MenuItem>
-                                        <MenuItem value={'sk'}>Slowakei</MenuItem>
-                                        <MenuItem value={'pe'}>Persien</MenuItem>
-                                    </Select>
-                                </FormControl>
-                            </form>
+                            <FormElement
+                                name='first_name'
+                                actionProp={actionProp}
+                            >
+                                <TextField
+                                    label="Vorname"
+                                    fullWidth
+                                    margin="normal"
+                                />
+                            </FormElement>
                         </Grid>
+
                         <Grid item xs={12} md={6}>
-                            <div className="picker">
+                            <FormElement
+                                name='last_name'
+                                actionProp={actionProp}
+                            >
+                                <TextField
+                                    label="Nachname"
+                                    fullWidth
+                                    margin="normal"
+                                />
+                            </FormElement>
+                        </Grid>
+
+                        <Grid item xs={12} md={6}>
+                            <FormElement
+                                name='password'
+                                actionProp={actionProp}
+                            >
+                                <TextField
+                                    label="Password"
+                                    type='password'
+                                    fullWidth
+                                    margin="normal"
+                                />
+                            </FormElement>
+                        </Grid>
+
+                        <Grid item xs={12} md={6}>
+                            <FormElement
+                                name='password_confirm'
+                                actionProp={actionProp}
+                            >
+                                <TextField
+                                    label="Password bestätigen"
+                                    type='password'
+                                    fullWidth
+                                    margin="normal"
+                                />
+                            </FormElement>
+                        </Grid>
+
+                        <Grid item xs={12} md={6}>
+                            <FormElement
+                                name='sbuergerschaft'
+                                actionProp={actionProp}
+                            >
+                                <TextField
+                                    select
+                                    fullWidth
+                                    label='Staatsbürgerschaft'
+                                    margin='normal'
+                                >
+                                    <MenuItem value={'at'}>Österreich</MenuItem>
+                                    <MenuItem value={'de'}>Deutschland</MenuItem>
+                                    <MenuItem value={'it'}>Italien</MenuItem>
+                                    <MenuItem value={'sk'}>Slowakei</MenuItem>
+                                    <MenuItem value={'pl'}>Polen</MenuItem>
+                                </TextField>
+                            </FormElement>
+                        </Grid>
+
+                        <Grid item xs={12} md={6}>
+                            <FormElement
+                                name='birthday'
+                                actionProp={actionProp}
+                                onChangeFunc={e => e}
+                            >
                                 <DatePicker
                                     label="Geburtsdatum"
                                     format="DD/MM/YYYY"
-                                    placeholder="10/10/2018"
+                                    disableFuture
                                     // handle clearing outside => pass plain array if you are not controlling value outside
-                                    mask={value => (value ? [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/] : [])}
+                                    //mask={value => (value ? [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/] : [])}
                                     fullWidth
                                     margin="normal"
-                                    value={new Date()}
-                                    onChange={this.handleDateChange}
                                     animateYearScrolling={false}
+                                    openToYearSelection
                                 />
-                            </div>
+                            </FormElement>
                         </Grid>
+
                         <Grid item xs={12} md={6}>
-                            <form className={classes.root} autoComplete="off">
-                                <FormControl className={classes.FormControl} margin="normal" fullWidth>
-                                    <InputLabel htmlFor="zugh-simple">Zugehörigkeit</InputLabel>
-                                    <Select
-                                        value={'a'}
-                                        onChange={this.handleChange}
-                                        inputProps={{
-                                            name: 'zugh',
-                                            id: 'zugh-simple'
-                                        }}
-                                    >
-                                        <MenuItem value={'a'}>Aktiv</MenuItem>
-                                        <MenuItem value={'j'}>Jugend</MenuItem>
-                                        <MenuItem value={'r'}>Reservist</MenuItem>
-                                    </Select>
-                                </FormControl>
-                            </form>
+                            <FormElement
+                                name='zugehoerigkeit'
+                                actionProp={actionProp}
+                            >
+                                <TextField
+                                    select
+                                    label='Zugehörigkeit'
+                                    fullWidth
+                                    margin='normal'
+                                >
+                                    <MenuItem value={'a'}>Aktiv</MenuItem>
+                                    <MenuItem value={'j'}>Jugend</MenuItem>
+                                    <MenuItem value={'r'}>Reservist</MenuItem>
+                                </TextField>
+                            </FormElement>
                         </Grid>
+
                         <Grid item xs={12} md={6}>
-                            <form className={classes.root} autoComplete="off">
-                                <FormControl className={classes.FormControl} margin="normal" fullWidth>
-                                    <InputLabel htmlFor="sex-simple">Geschlecht</InputLabel>
-                                    <Select
-                                        value={'m'}
-                                        onChange={this.handleChange}
-                                        inputProps={{
-                                            name: 'sex',
-                                            id: 'sex-simple'
-                                        }}
-                                    >
-                                        <MenuItem value={'m'}>Männlich</MenuItem>
-                                        <MenuItem value={'f'}>Weiblich</MenuItem>
-                                        <MenuItem value={'o'}>Anders</MenuItem>
-                                    </Select>
-                                </FormControl>
-                            </form>
+                            <FormElement
+                                name='gender'
+                                actionProp={actionProp}
+                            >
+                                <TextField
+                                    select
+                                    label='Geschlecht'
+                                    fullWidth
+                                    margin='normal'
+                                >
+                                    <MenuItem value={'m'}>Männlich</MenuItem>
+                                    <MenuItem value={'f'}>Weiblich</MenuItem>
+                                    <MenuItem value={'o'}>Anders</MenuItem>
+                                </TextField>
+                            </FormElement>
                         </Grid>
+
                         <Grid item xs={12} md={6}>
-                            <form className={classes.root} autoComplete="off">
-                                <FormControl className={classes.FormControl} margin="normal" fullWidth>
-                                    <InputLabel htmlFor="rang-simple">Rang</InputLabel>
-                                    <Select
-                                        value={'olm'}
-                                        onChange={this.handleChange}
-                                        inputProps={{
-                                            name: 'rang',
-                                            id: 'rang-simple'
-                                        }}
+                                <FormElement
+                                    name='rank'
+                                    actionProp={actionProp}
+                                >
+                                    <TextField
+                                        select
+                                        label='Rang'
+                                        fullWidth
+                                        margin='normal'
                                     >
                                         <MenuItem value={'pfm'}>Probefeuerwehrmann</MenuItem>
                                         <MenuItem value={'fm'}>Feuerwehrmann</MenuItem>
@@ -164,10 +258,19 @@ class AddMitglied extends React.Component {
                                         <MenuItem value={'lm'}>Löschmeister</MenuItem>
                                         <MenuItem value={'olm'}>Oberlöschmeister</MenuItem>
                                         <MenuItem value={'hlm'}>Hauptlöschmeister</MenuItem>
-                                    </Select>
-                                </FormControl>
-                            </form>
+                                    </TextField>
+                                </FormElement>
                         </Grid>
+
+                        <Grid item xs={12}>
+                            <div className={classes.toRight}>
+                                <Button variant="raised" color="primary" onClick={executeAction}>
+                                    Hinzufügen
+                                    <Icon className={classes.rightIcon}>save</Icon>
+                                </Button>
+                            </div>
+                        </Grid>{/**/}
+
                     </Grid>
                 </Container>
             </div>
@@ -179,4 +282,4 @@ AddMitglied.propTypes = {
     classes: PropTypes.object.isRequired,
 }
 
-export default withStyles(styles)(AddMitglied)
+export default withStyles(styles)(withAction(actionConfig)(AddMitglied))

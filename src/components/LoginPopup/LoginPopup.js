@@ -76,6 +76,7 @@ class LoginPopup extends React.Component {
                         autoFocus
                         margin='normal'
                         label='Username/Email'
+                        autoComplete='username email'
                         onKeyPress={this.onKeyPress}
                         value={user}
                         onChange={(event) => {setName(event.target.value)}}
@@ -85,6 +86,7 @@ class LoginPopup extends React.Component {
                         margin='normal'
                         label='Password'
                         type='password'
+                        autoComplete='current-password'
                         onKeyPress={this.onKeyPress}
                         value={pw}
                         onChange={(event) => {setPw(event.target.value)}}

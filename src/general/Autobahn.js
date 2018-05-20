@@ -17,7 +17,7 @@ const getUrl = () => {
     if (DEBUGGING)
         return 'wss://david.fireline.io/api'
     const host = window.location.hostname
-    return 'wss://' + host + ':8080/ws'
+    return 'wss://' + host + '/api'
 }
 
 const setState = (state) => {

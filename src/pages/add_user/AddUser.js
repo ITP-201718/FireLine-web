@@ -96,7 +96,7 @@ class AddUser extends React.Component {
                             />
                         </Grid>
 
-                        <Grid itme xs={12}>
+                        <Grid item xs={12}>
                             <div className={classes.toRight}>
                                 <Button variant="raised" color="primary" size="small">
                                     Hinzufügen

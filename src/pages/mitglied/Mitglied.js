@@ -10,7 +10,7 @@ const columnData = [
     {id: 'id', padding: false, label: 'ID', min: true, type: 'number'},
     {
         id: 'img', padding: 'dense', label: 'Foto', min: true, type: 'img', format: (d, row) => {
-            return gA + md5(row.mail) + gE
+            return typeof row.mail === 'string' ? gA + md5(row.mail) + gE : '/img/default_user.png'
         }
     },
     {id: 'username', padding: 'dense', label: 'Benutzername', inlineEdit: false, type: 'text'},
