@@ -87,10 +87,7 @@ class Account extends React.Component {
         super(props)
         const { profile } = props
         this.state = {
-            values: {
-                ...profile,
-                birthday: new Date(),
-            },
+            values: profile,
             changed: [],
             saving: false,
         }
@@ -197,8 +194,8 @@ class Account extends React.Component {
                                 label="Benutzername"
                                 fullWidth
                                 margin="normal"
-                                value={this.getValue('username', 'Unknown')}
-                                onChange={(event) => {this.setState('username', event.target.value)}}
+                                value={this.getValue('id', 'Unknown')}
+                                onChange={(event) => {this.setState('id', event.target.value)}}
                                 disabled
                             />
                         </Grid>
@@ -310,6 +307,52 @@ class Account extends React.Component {
                                     animateYearScrolling={false}
                                 />
                             </div>
+                        </Grid>
+
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                disabled
+                                value={this.getValue('rank', 'Kein Rang')}
+                                onChange={(event) => {this.updateValue('rang', event.target.value)}}
+                                label="Rang"
+                                id="rang"
+                                fullWidth
+                                type="text"
+                                margin="normal"
+                                InputLabelProps={{
+                                    FormControlClasses: {
+                                        focused: classes.inputLabelFocused,
+                                    }
+                                }}
+                                InputProps={{
+                                    classes: {
+                                        inkbar: classes.inputInkbar,
+                                    }
+                                }}
+                            />
+                        </Grid>
+
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                disabled
+                                value={this.getValue('jurisdiction', 'Kein Zuständigkeitsbereich')}
+                                onChange={(event) => {this.updateValue('rang', event.target.value)}}
+                                label="Zuständigkeitsbereich"
+                                id="jurisdiction"
+                                fullWidth
+                                type="text"
+                                margin="normal"
+                                InputLabelProps={{
+                                    FormControlClasses: {
+                                        focused: classes.inputLabelFocused,
+                                    }
+                                }}
+                                InputProps={{
+                                    classes: {
+                                        inkbar: classes.inputInkbar,
+                                    }
+                                }}
+                            />
                         </Grid>
 
                         <Grid item xs={12}>

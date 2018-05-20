@@ -1,5 +1,5 @@
 import LoginPopup from './LoginPopup'
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 import {
     loginPopupGetName,
     loginPopupGetPw,
@@ -11,8 +11,7 @@ import {
     loginPopupSetPw,
     loginPopupSetOpen, loginPopupSetErrorMsg, loginPopupSetError,
 } from '../../redux/actions/loginPopup';
-import {call, getUserErrorMessage, tryUserAuth} from '../../general/Autobahn';
-import {setLoggedIn, setUserProfile} from '../../redux/actions/profile';
+import {getUserErrorMessage, tryUserAuth} from '../../general/Autobahn';
 
 const mapStateToProps = (state) => {
     return {
@@ -27,9 +26,15 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setName: (name) => {dispatch(loginPopupSetName(name))},
-        setPw: (pw) => {dispatch(loginPopupSetPw(pw))},
-        setOpen: (open) => {dispatch(loginPopupSetOpen(open))},
+        setName: (name) => {
+            dispatch(loginPopupSetName(name))
+        },
+        setPw: (pw) => {
+            dispatch(loginPopupSetPw(pw))
+        },
+        setOpen: (open) => {
+            dispatch(loginPopupSetOpen(open))
+        },
         handleLogin: (user, pw) => dispatch(connectToWs(user, pw)),
     }
 }
@@ -41,11 +46,6 @@ function connectToWs(user, pw) {
                 dispatch(loginPopupSetName(''))
                 dispatch(loginPopupSetOpen(false))
                 dispatch(loginPopupSetError(false))
-                dispatch(setLoggedIn(true))
-
-                call('profile.get').then((res) => {
-                    dispatch(setUserProfile(res))
-                })
             })
             .catch(error => {
                 dispatch(loginPopupSetErrorMsg(getUserErrorMessage(error)))

@@ -4,11 +4,13 @@ import {
     setAutonbahnConnectionState,
     autobahnConnectionState
 } from '../redux/actions/autobahn';
+import {setLoggedIn, setUserProfile} from '../redux/actions/profile';
 
 export const baseUri = 'io.fireline.api.'
 export let session = null;
 let connection = null
 
+// TODO: remove debugging
 const DEBUGGING = true
 
 const getUrl = () => {
@@ -82,6 +84,16 @@ export const register = async (procedure, endpoint, options = null) => {
     return proc
 }
 
+const authSuccessful = () => {
+    setState(autobahnConnectionState.connected)
+    store.dispatch(setLoggedIn(true))
+    callOnConnect()
+
+    call('profile.get').then((res) => {
+        store.dispatch(setUserProfile(res))
+    })
+}
+
 export const tryCookieAuth = (onOpen) => {
     connection = new autobahn.Connection({
         url: getUrl(),
@@ -91,13 +103,14 @@ export const tryCookieAuth = (onOpen) => {
 
     connection.onopen = (_session, details) => {
         session = _session
-        setState(autobahnConnectionState.connected)
+        authSuccessful()
         if (typeof onOpen === 'function')
             onOpen(session, details)
     }
 
     connection.onclose = () => {
         setState(autobahnConnectionState.disconnected)
+        return true
     }
 
     connection.open()
@@ -106,8 +119,7 @@ export const tryCookieAuth = (onOpen) => {
 
 export const tryUserAuth = async (user, pw) => {
     return new Promise((resolve, reject) => {
-        let onchallenge = (session, method, extra) => {
-            console.log('onchallenge', method, extra);
+        const onChallenge = (session, method, extra) => {
             if (method === 'ticket') {
                 return pw
             } else {
@@ -118,20 +130,21 @@ export const tryUserAuth = async (user, pw) => {
         connection = new autobahn.Connection({
             url: getUrl(),
             realm: 'fireline',
-            authmethods: ['cookie', 'ticket'],
+            authmethods: ['ticket'],
             authid: user,
-            onchallenge,
+            onchallenge: onChallenge,
         })
 
         connection.onopen = (_session, details) => {
             session = _session
-            setState(autobahnConnectionState.connected)
+            authSuccessful()
             resolve({session: _session, details})
         }
 
         connection.onclose = (reason, details) => {
             setState(autobahnConnectionState.disconnected)
             reject({reason, details})
+            return true
         }
 
         connection.open()
@@ -139,7 +152,7 @@ export const tryUserAuth = async (user, pw) => {
     })
 }
 
-export const connectToWs = (user, pw, onOpen, onClose) => {
+/*export const connectToWs = (user, pw, onOpen, onClose) => {
 
     tryUserAuth(user, pw)
         .then(res => {
@@ -150,7 +163,7 @@ export const connectToWs = (user, pw, onOpen, onClose) => {
             if (typeof onClose === 'function')
                 onClose(res.session, res.details)
         })
-}
+}*/
 
 export const getUserErrorMessage = (reason, details) => {
     if (typeof reason === 'object') {
@@ -175,11 +188,39 @@ export const getUserErrorMessage = (reason, details) => {
     }
 }
 
-export const disconnectWs = (reason, details) => {
+export const disconnectWs = (reason="wamp.close.logout", details) => {
     setState(autobahnConnectionState.disconnected)
     if (connection) {
         connection.close(reason, details)
     }
     connection = null
     session = null
+}
+
+let onConnectCall = {}
+
+/**
+ * @param {function} func Function to be called when autobahn connects
+ */
+export const registerOnConnect = (func) => {
+    if (!(func && {}.toString.call(func) === '[object Function]')) {
+        throw new Error("The 'func' supplied was not an function.")
+    }
+    const uid = '_' + Math.random().toString(36).substr(2, 9);
+    onConnectCall[uid] = func
+}
+
+export const unregisterOnConnect = (uid) => {
+    if(uid in onConnectCall) {
+        delete onConnectCall[uid]
+        return true
+    }
+    return false
+}
+
+const callOnConnect = () => {
+    for(const uid in onConnectCall) {
+        onConnectCall[uid]()
+        unregisterOnConnect(uid)
+    }
 }

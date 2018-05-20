@@ -10,6 +10,7 @@ import AddUser from '../pages/add_user'
 import AddMitglied from '../pages/add_mitglied'
 import Ausbildung from '../pages/ausbildung'
 import Rang from '../pages/rang'
+import Mitglied from '../pages/mitglied'
 
 const routes = {
     path: '/',
@@ -18,8 +19,14 @@ const routes = {
     childRoutes: [
         {path: 'profile', component: Profile},
         {path: 'add_user', component: AddUser},
-        {path: 'add_mitglied', component: AddMitglied},
         {path: 'ausbildung', component: Ausbildung},
+        {
+            path: 'mitglied',
+            indexRoute: {component: Mitglied},
+            childRoutes: [
+                {path: 'add', component: AddMitglied}
+            ],
+        },
         {path: 'rang', component: Rang},
         {path: ':pageName', component: Default},
     ]

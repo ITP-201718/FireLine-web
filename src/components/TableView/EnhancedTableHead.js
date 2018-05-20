@@ -10,6 +10,7 @@ import Checkbox from 'material-ui/Checkbox';
 import Tooltip from 'material-ui/Tooltip';
 import IconButton from 'material-ui/IconButton'
 import Icon from 'material-ui/Icon'
+import {getPadding} from './TableView'
 
 class EnhancedTableHead extends React.Component {
     createSortHandler = property => event => {
@@ -41,7 +42,7 @@ class EnhancedTableHead extends React.Component {
                             <TableCell
                                 key={column.id}
                                 numeric={column.numeric}
-                                padding={column.disablePadding ? 'none' : 'default'}
+                                padding={getPadding(column.padding)}
                                 sortDirection={orderBy === column.id ? order : false}
                             >
                                 <Tooltip

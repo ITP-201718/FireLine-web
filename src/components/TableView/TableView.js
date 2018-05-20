@@ -17,7 +17,15 @@ import IconButton from 'material-ui/IconButton';
 import Icon from 'material-ui/Icon'
 import Popover from 'material-ui/Popover';
 import TextField from 'material-ui/TextField'
-import {call, isConnected, subscribe, unsubscribe} from '../../general/Autobahn'
+import Select from 'material-ui/Select'
+import {MenuItem} from 'material-ui/Menu'
+import {format} from 'date-fns'
+import DatePicker from 'material-ui-pickers/DatePicker'
+import Input from 'material-ui/Input'
+import Avatar from 'material-ui/Avatar'
+import ClassNames from 'classnames'
+
+import {call, isConnected, subscribe, unsubscribe, registerOnConnect, unregisterOnConnect} from '../../general/Autobahn'
 import AutoAdd from './AutoAdd';
 
 const styles = theme => ({
@@ -58,6 +66,25 @@ const styles = theme => ({
         position: 'absolute',
         right: theme.spacing.unit * 4,
         bottom: theme.spacing.unit * 2,
+    },
+    inputFont: {
+        fontSize: '0.8125rem',
+    },
+    iconFont: {
+        fontSize: 19,
+    },
+    lineHeight: {
+        lineHeight: '26px',
+        whiteSpace: 'nowrap',
+        width: 'calc(100% + 24px)',
+    },
+    inLine: {
+        display: 'inline',
+    },
+    floatRight: {
+        float: 'right',
+        height: 'inherit',
+        width: 24,
     }
 });
 
@@ -86,27 +113,45 @@ class TableView extends React.Component {
         }
     }
 
-    componentDidMount = async () => {
-        this.getData()
-        if (isConnected()) {
-            const {uris} = this.props
-            let subscriptions = {
-                update: await subscribe(uris.update, this.handleWampUpdate),
-                create: await subscribe(uris.create, this.handleWampCreate),
-                delete: await subscribe(uris.delete, this.handleWampDelete),
-            }
+    typeOpenPopup = ['text', 'mail', 'number', 'phone']
 
-            this.setState({subscriptions})
+    componentDidMount = () => {
+        if (isConnected()) {
+            this.initComponent()
+        } else {
+            this.onConnect = registerOnConnect(this.initComponent)
         }
     }
 
+    initComponent = async () => {
+        this.getData()
+        const {uris} = this.props
+        let subscriptions = {
+            update: await subscribe(uris.update, this.handleWampUpdate),
+            create: await subscribe(uris.create, this.handleWampCreate),
+            delete: await subscribe(uris.delete, this.handleWampDelete),
+        }
+
+        this.setState({subscriptions})
+    }
+
     componentWillUnmount = async () => {
+        if (this.onConnect) {
+            unregisterOnConnect(this.onConnect)
+        }
         if (this.state.subscriptions && isConnected()) {
             const {subscriptions} = this.state
             await unsubscribe(subscriptions.delete)
             await unsubscribe(subscriptions.create)
             await unsubscribe(subscriptions.update)
         }
+    }
+
+    onAdd = (e) => {
+        if (this.props.autoAdd) {
+            this.setAutoAddOpen(true)
+        }
+        this.props.onAdd()
     }
 
     setAutoAddOpen = (state) => {
@@ -187,6 +232,8 @@ class TableView extends React.Component {
             console.error(e)
             return
         }
+
+        console.log(res.data)
 
         this.setState({
             data: this.sort(order, orderBy, res.data)
@@ -284,35 +331,42 @@ class TableView extends React.Component {
             return
         }
 
-        console.log(row)
+        console.log(column)
 
         event.stopPropagation()
 
-        this.setState({
-            popover: {
-                anchorEl: event.target,
-                label: column.label,
-                text: row[column.id],
-                column,
-                row,
-            }
-        })
+        if (this.typeOpenPopup.includes(column.type)) {
+            this.setState({
+                popover: {
+                    anchorEl: event.target,
+                    label: column.label,
+                    text: row[column.id],
+                    column,
+                    row,
+                }
+            })
+        }
+
     }
 
-    handleDataUpdate = () => {
-        const {uris} = this.props
+    handlePopupUpdate = () => {
         const {popover} = this.state
-
         this.handlePopoverClose()
 
         if (popover.row[popover.column.id] === popover.text) {
             return
         }
 
-        call(uris.update, null, {
-            id: popover.row.id,
+        this.handleDataUpdate(popover.column, popover.row, popover.text)
+    }
+
+    handleDataUpdate = (column, row, value) => {
+        const {uris} = this.props
+
+        call(uris.update, [], {
+            id: row.id,
             values: {
-                [popover.column.id]: popover.text
+                [column.id]: value,
             }
         })
     }
@@ -320,7 +374,7 @@ class TableView extends React.Component {
     handlePopoverOnKeyPress = (event) => {
         if (event.key === 'Enter') {
             event.preventDefault()
-            this.handleDataUpdate()
+            this.handlePopupUpdate()
         }
     }
 
@@ -334,10 +388,81 @@ class TableView extends React.Component {
         this.setState({popover: popoverDefaults})
     }
 
+    getCell = (row, column) => {
+        const {classes} = this.props
+
+        let data = row[column.id]
+        if ('format' in column) {
+            data = column.format(data, row, column)
+        }
+        const cType = column.type
+        if (this.typeOpenPopup.includes(cType)) {
+            return data
+        } else if (cType === 'oneof') {
+            if (column.inlineEdit) {
+                return (
+                    <Select
+                        value={data}
+                        fullWidth
+                        autoWidth={true}
+                        className={classes.inputFont}
+                        onChange={(e) => {
+                            this.handleDataUpdate(column, row, e.target.value)
+                        }}
+                        input={<Input disableUnderline/>}
+                    >
+                        {
+                            Object.keys(column.oneof).map((item) => (
+                                <MenuItem value={item} key={item}>{column.oneof[item]}</MenuItem>
+                            ))
+                        }
+                    </Select>
+                )
+            } else {
+                return column.oneof[data]
+            }
+        } else if (cType === 'date') {
+            if (column.inlineEdit) {
+                return (
+                    <div className={classes.lineHeight}>
+                        <div className={classes.inLine}>{format(data, 'DD/MM/YYYY')}</div>
+                        {<DatePicker
+                            onChange={(newDate) => {
+                                this.handleDataUpdate(column, row, format(newDate, 'YYYY-MM-DD'))
+                            }}
+                            value={data}
+                            format={'DD/MM/YYYY'}
+                            keyboard
+                            clearable
+                            emptyLabel={'0000-00-00'}
+                            disableFuture
+                            TextFieldComponent={(props) => {
+                                const onClick = props.InputProps.endAdornment.props.children.props.onClick
+                                return (
+                                    <IconButton onClick={onClick} className={ClassNames(classes.inLine, classes.floatRight)}>
+                                        <Icon>
+                                            event
+                                        </Icon>
+                                    </IconButton>)
+                            }}
+                            classes={{input: classes.inputFont}}
+                        />}
+                    </div>
+                )
+            } else {
+                return format(data, 'DD/MM/YYYY')
+            }
+        } else if (cType === 'img') {
+            return <Avatar src={data}/>
+        }
+
+        return null
+    }
+
     isSelected = id => this.state.selected.indexOf(id) !== -1;
 
     render() {
-        const {classes, columns, title, onlyShow, showEdit, showAdd, onAdd, uris, autoAddTitle, autoAddText} = this.props
+        const {classes, columns, title, onlyShow, showEdit, showAdd, uris, autoAddTitle, autoAddText} = this.props
         const {data, order, orderBy, selected, rowsPerPage, page, popover} = this.state
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
         let extraColumns = 1
@@ -403,12 +528,12 @@ class TableView extends React.Component {
                                                 return (
                                                     <TableCell
                                                         key={column.id}
-                                                        numeric={column.numeric}
-                                                        padding={column.disablePadding ? 'none' : 'default'}
+                                                        numeric={column.type === 'number'}
+                                                        padding={getPadding(column.padding)}
                                                         classes={{typeBody: column.min ? classes.tdMin : ''}}
                                                         onClick={(e) => this.handleInlineChange(e, column, n)}
                                                     >
-                                                        {n[column.id]}
+                                                        {this.getCell(n, column)}
                                                     </TableCell>)
                                             })}
 
@@ -459,6 +584,7 @@ class TableView extends React.Component {
                         className={classes.popoverTextField}
                         label={popover.label}
                         value={popover.text}
+                        type={popover.column ? popover.column.type : 'text'}
                         onChange={this.handlePopoverChange}
                         onKeyPress={this.handlePopoverOnKeyPress}
                     />}
@@ -469,7 +595,9 @@ class TableView extends React.Component {
                         color='primary'
                         aria-label='add'
                         className={classes.fab}
-                        onClick={(e) => {onAdd(e); this.setAutoAddOpen(true)}}
+                        onClick={(e) => {
+                            this.onAdd(e)
+                        }}
                     >
                         <Icon>add</Icon>
                     </Button>
@@ -481,7 +609,9 @@ class TableView extends React.Component {
                         uris={uris}
                         title={autoAddTitle}
                         text={autoAddText}
-                        onClose={() => {this.setAutoAddOpen(false)}}
+                        onClose={() => {
+                            this.setAutoAddOpen(false)
+                        }}
                     />
                 )}
                 <div>
@@ -502,6 +632,7 @@ TableView.propTypes = {
     onAdd: PropTypes.func,
     showEdit: PropTypes.bool,
     sortAtMount: PropTypes.bool,
+    autoAdd: PropTypes.bool,
     autoAddTitle: PropTypes.string,
     autoAddText: PropTypes.string
 };
@@ -513,7 +644,26 @@ TableView.defaultProps = {
     onAdd: () => {
     },
     showEdit: false,
+    autoAdd: false,
     autoAddTitle: 'Neues erstellen'
+}
+
+export const getPadding = (type) => {
+    const paddings = ['default', 'checkbox', 'dense', 'none']
+    if (typeof type === 'boolean') {
+        return type ? 'default' : 'none'
+    }
+    if (typeof type === 'string') {
+        if (paddings.includes(type)) {
+            return type
+        }
+    }
+    if (typeof type === 'number') {
+        if (type >= 0 && type < paddings.length) {
+            return paddings[type]
+        }
+    }
+    return 'dense'
 }
 
 export default withStyles(styles)(TableView)

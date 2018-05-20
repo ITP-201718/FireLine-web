@@ -9,6 +9,9 @@ import Routes from './general/Routes'
 import MainWrapper from './components/MainWrapper'
 import Main from './components/route_test/Main'
 
+
+import {tryCookieAuth} from './general/Autobahn';
+
 ReactDOM.render((
     <Redux>
         <Theme>
@@ -16,3 +19,5 @@ ReactDOM.render((
         </Theme>
     </Redux>
 ), document.getElementById('root'));
+
+tryCookieAuth(() => {console.log('cookie auth')})

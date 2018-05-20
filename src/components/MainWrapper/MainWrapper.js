@@ -121,39 +121,11 @@ class MainWrapper extends React.Component {
                 <div className={classes.drawerItemsWrapper}>
                     <Divider/>
                     <List>
-                        <ListItem button onClick={this.drawerPush('ausbildung')}><ListItemText primary='Ausbildungen'/></ListItem>
-                        <ListItem button onClick={this.drawerPush('rang')}><ListItemText primary='Ränge'/></ListItem>
+                        <ListItem button onClick={this.drawerPush('/ausbildung')}><ListItemText primary='Ausbildungen'/></ListItem>
+                        <ListItem button onClick={this.drawerPush('/rang')}><ListItemText primary='Ränge'/></ListItem>
+                        <ListItem button onClick={this.drawerPush('/mitglied')}><ListItemText primary='Mitglieder'/></ListItem>
                     </List>
                     <Divider/>
-                    <List>
-                        <ListItem button onClick={this.drawerPush('first')}><ListItemText primary="First"/></ListItem>
-                        <ListItem button onClick={this.drawerPush('second')}><ListItemText primary="Second"/></ListItem>
-                        <ListItem button onClick={this.drawerPush('third')}><ListItemText primary="Third"/></ListItem>
-                    </List>
-                    <Divider/>
-                    <List>
-                        <ListItem button onClick={this.drawerPush('eins')}><ListItemText primary="Eins"/></ListItem>
-                        <ListItem button onClick={this.drawerPush('zwei')}><ListItemText primary="Zwei"/></ListItem>
-                        <ListItem button onClick={this.drawerPush('drei')}><ListItemText primary="Drei"/></ListItem>
-                    </List>
-                    <Divider/>
-                    <List>
-                        <ListItem button onClick={this.drawerPush('uno')}><ListItemText primary="Uno"/></ListItem>
-                        <ListItem button onClick={this.drawerPush('dos')}><ListItemText primary="Dos"/></ListItem>
-                        <ListItem button onClick={this.drawerPush('tres')}><ListItemText primary="Tres"/></ListItem>
-                    </List>
-                    <Divider/>
-                    <List>
-                        <ListItem button onClick={this.drawerPush('un')}><ListItemText primary="Un"/></ListItem>
-                        <ListItem button onClick={this.drawerPush('deux')}><ListItemText primary="Deux"/></ListItem>
-                        <ListItem button onClick={this.drawerPush('trois')}><ListItemText primary="Trois"/></ListItem>
-                    </List>
-                    <Divider/>
-                    <List>
-                        <ListItem button onClick={this.drawerPush('uno')}><ListItemText primary="Uno"/></ListItem>
-                        <ListItem button onClick={this.drawerPush('due')}><ListItemText primary="Due"/></ListItem>
-                        <ListItem button onClick={this.drawerPush('tre')}><ListItemText primary="Tre"/></ListItem>
-                    </List>
                 </div>
             </div>
         )

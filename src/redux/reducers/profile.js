@@ -42,8 +42,8 @@ const profile = (state = initialState, action) => {
         case SET_LOGGED_IN:
             return state.set('loggedIn', !!action.loggedIn);
         case PROFILE_SET:
-            let curState = state.get('profile').toJS()
-            let newState = {...curState, ...action.profile}
+            const curState = state.get('profile').toJS()
+            const newState = {...curState, ...action.profile}
             return state.set('profile', Immutable.fromJS(newState))
         case PROFILE_SET_USER_VNAME:
             return state.setIn(['profile', 'first_name'], action.vname)
