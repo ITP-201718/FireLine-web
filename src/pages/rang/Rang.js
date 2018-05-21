@@ -3,9 +3,9 @@ import TableView from '../../components/TableView'
 import Container from '../../components/Container/Container';
 
 const columnData = [
-    {id: 'id', numeric: true, disablePadding: true, label: 'ID', min: true},
-    {id: 'name', numeric: false, disablePadding: false, label: 'Name', inlineEdit: true},
-    {id: 'kname', numeric: false, disablePadding: false, label: 'Kurzform', inlineEdit: true},
+    {id: 'id', type: 'number', disablePadding: true, label: 'ID', min: true},
+    {id: 'name', type: 'text', disablePadding: false, label: 'Name', inlineEdit: true},
+    {id: 'kname', type: 'text', disablePadding: false, label: 'Kurzform', inlineEdit: true},
 ];
 
 const data = [{'kname': 'OFM', 'id': 1, 'name': 'Oberfeuerwehrmann'}]

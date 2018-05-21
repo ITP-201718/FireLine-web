@@ -1,6 +1,6 @@
 import React from 'react'
 import MainWrapper from '../components/MainWrapper';
-import Main from '../components/route_test/Main';
+import Main from '../pages/Main/Main';
 import Profile from '../pages/profile';
 import Default from '../components/route_test/Default';
 import {store} from './Redux';

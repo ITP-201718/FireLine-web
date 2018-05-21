@@ -7,7 +7,7 @@ import Redux from './general/Redux'
 import Theme from './general/Theme'
 import Routes from './general/Routes'
 import MainWrapper from './components/MainWrapper'
-import Main from './components/route_test/Main'
+import Main from './pages/Main/Main'
 
 
 import {tryCookieAuth} from './general/Autobahn';

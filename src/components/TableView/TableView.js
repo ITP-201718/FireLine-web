@@ -627,7 +627,6 @@ TableView.propTypes = {
     columns: PropTypes.array.isRequired,
     uris: PropTypes.object.isRequired,
     title: PropTypes.string,
-    showOnly: PropTypes.bool,
     showAdd: PropTypes.bool,
     onAdd: PropTypes.func,
     showEdit: PropTypes.bool,
@@ -639,7 +638,6 @@ TableView.propTypes = {
 
 TableView.defaultProps = {
     sortAtMount: false,
-    showOnly: false,
     showAdd: false,
     onAdd: () => {
     },
