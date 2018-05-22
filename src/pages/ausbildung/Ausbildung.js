@@ -23,6 +23,7 @@ class Ausbildung extends React.Component {
                     }}
                     title='Ausbildungen'
                     sortAtMount
+                    autoAdd
                     showAdd
                     onAdd={() => {
                         console.log('add')

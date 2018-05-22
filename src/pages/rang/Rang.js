@@ -24,6 +24,8 @@ class Rang extends React.Component {
                         update: 'rank.update',
                         create: 'rank.create',
                     }}
+                    autoAdd
+                    showAdd
                     title='Ränge'
                     data={data}
                 />

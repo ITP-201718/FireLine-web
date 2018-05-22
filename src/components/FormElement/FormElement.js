@@ -5,7 +5,7 @@ class FormElement extends React.Component {
 
     render() {
         const {children, onChangeProp, onChangeFunc, valueProp, actionProp, name, showHelperText, helperTextProp,
-            showError, errorProp} = this.props
+            showError, errorProp, useOnKeyUp, onKeyUpProp, childIsTextField} = this.props
 
         let props = {
             [valueProp]: actionProp.getValue(name),
@@ -14,6 +14,15 @@ class FormElement extends React.Component {
 
         showError && (props[errorProp] = (name in actionProp.errors))
         showHelperText && (props[helperTextProp] =  ((name in actionProp.errors) && actionProp.errors[name][0]))
+
+        if(useOnKeyUp) {
+            if(childIsTextField) {
+                props['InputProps'] = {[onKeyUpProp]: (e) => {e.key === 'Enter' && actionProp.executeAction()}}
+                props['SelectProps'] = {[onKeyUpProp]: (e) => {e.key === 'Enter' && actionProp.executeAction()}}
+            } else {
+                props[onKeyUpProp] = (e) => {e.key === 'Enter' && actionProp.executeAction()}
+            }
+        }
 
         const Child = Array.isArray(children) ? children[0] : children
 
@@ -33,9 +42,13 @@ FormElement.propTypes = {
     showHelperText: PropTypes.bool,
     errorProp: PropTypes.string,
     showError: PropTypes.bool,
+    onKeyUpProp: PropTypes.string,
+    useOnKeyUp: PropTypes.bool,
+    childIsTextField: PropTypes.bool,
 }
 
 FormElement.defaultProps = {
+    childIsTextField: true,
     onChangeProp: 'onChange',
     onChangeFunc: (e) => {return e.target.value},
     valueProp: 'value',
@@ -43,6 +56,8 @@ FormElement.defaultProps = {
     helperTextProp: 'helperText',
     showError: true,
     errorProp: 'error',
+    onKeyUpProp: 'onKeyUp',
+    useOnKeyUp: true,
 }
 
 export default FormElement

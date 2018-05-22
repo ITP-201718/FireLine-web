@@ -8,7 +8,10 @@ import Dialog, {
     DialogContentText,
     DialogTitle,
 } from 'material-ui/Dialog';
+import {MenuItem} from 'material-ui/Menu'
 import { call } from '../../general/Autobahn'
+import withAction from '../withAction'
+import FormElement from '../FormElement'
 
 const styles = {
     dialog: {
@@ -20,9 +23,26 @@ class AutoAdd extends React.Component {
 
     constructor(props) {
         super(props)
+        const {actionProp, uris, columns} = props
+        actionProp.setOption('uri', uris.create)
+        let formaters = {}
+        for(let column of columns) {
+            if('format' in column) {
+                formaters[column.id] = column.format
+            }
+        }
+        actionProp.setOption('formatters', formaters)
+        actionProp.setOption('onSuccess', this.onSuccess)
 
         this.state = {
             values: {}
+        }
+    }
+
+    onSuccess = () => {
+        const {onClose} = this.props
+        if(typeof onClose === 'function') {
+            onClose()
         }
     }
 
@@ -44,7 +64,8 @@ class AutoAdd extends React.Component {
     }
 
     render() {
-        const {classes, title, text, columns, open, onClose} = this.props
+        const {classes, title, text, columns, open, onClose,
+            actionProp} = this.props
         let first = true
 
         return (
@@ -66,16 +87,22 @@ class AutoAdd extends React.Component {
                             return null
                         }
                         const ret = (
-                            <TextField
-                                key={column.id}
-                                type={column.numeric ? 'number' : 'text'}
-                                label={column.label}
-                                margin='dense'
-                                fullWidth
-                                autoFocus={first}
-                                value={this.state[column.id]}
-                                onChange={(e) => this.handleInputChange(e, column.id)}
-                            />
+                            <FormElement key={column.id}
+                                         name={column.id}
+                                         actionProp={actionProp}>
+                                <TextField
+                                    type={column.type}
+                                    select={column.type === 'oneof'}
+                                    label={column.label}
+                                    margin='dense'
+                                    fullWidth
+                                    autoFocus={first}
+                                >
+                                    {column.type === 'oneof' && Object.keys(column.oneof).map((item) => {
+                                        return <MenuItem key={item} value={item}>{column.oneof[item]}</MenuItem>
+                                    })}
+                                </TextField>
+                            </FormElement>
                         )
 
                         first = false
@@ -86,7 +113,7 @@ class AutoAdd extends React.Component {
                     <Button color='secondary' onClick={onClose}>
                         Abbrechen
                     </Button>
-                    <Button color='primary' onClick={this.handleAdd}>
+                    <Button color='primary' onClick={actionProp.executeAction}>
                         Hinzufügen
                     </Button>
                 </DialogActions>
@@ -94,4 +121,4 @@ class AutoAdd extends React.Component {
     }
 }
 
-export default withStyles(styles)(AutoAdd)
+export default withStyles(styles)(withAction({actionProp: true})(AutoAdd))
