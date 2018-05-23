@@ -105,6 +105,7 @@ class TableView extends React.Component {
             orderBy: props.sortAtMount ? 'id' : '',
             selected: [],
             data: [],
+            search: '',
             page: 0,
             rowsPerPage: 10,
             popover: popoverDefaults,
@@ -170,7 +171,7 @@ class TableView extends React.Component {
                 break
             }
         }
-        this.setState({data: this.sort(undefined, undefined, newData)})
+        this.setState({data: newData})
         setTimeout(() => {
             this.removeUpdateAnimation(newRow.id)
         }, 400)
@@ -183,7 +184,7 @@ class TableView extends React.Component {
         let newData = [...data]
         newData.push(newRow)
 
-        this.setState({data: this.sort(undefined, undefined, newData)})
+        this.setState({data: newData})
         setTimeout(() => {
             this.removeUpdateAnimation(newRow.id)
         }, 400)
@@ -202,7 +203,7 @@ class TableView extends React.Component {
                 newData[i].update = false
             }
         }
-        this.setState({data: this.sort(undefined, undefined, newData)})
+        this.setState({data: undefined, undefined, newData})
     }
 
     getColumnById = (id) => {
@@ -217,12 +218,11 @@ class TableView extends React.Component {
 
         // TODO: remove this debugging statement
         if (!isConnected() && this.props.data) {
-            this.setState({data: this.sort(undefined, undefined, this.props.data)})
+            this.setState({data: this.props.data})
             return
         }
 
         const {uris} = this.props
-        const {order, orderBy} = this.state
 
         const uri = uris.get
         let res
@@ -236,7 +236,7 @@ class TableView extends React.Component {
         console.log(res.data)
 
         this.setState({
-            data: this.sort(order, orderBy, res.data)
+            data: res.data
         })
     }
 
@@ -248,7 +248,6 @@ class TableView extends React.Component {
             order = 'asc'
         }
 
-        this.sort(order, orderBy)
         this.setState({order, orderBy})
     }
 
@@ -264,6 +263,32 @@ class TableView extends React.Component {
             return data
         }
         this.setState({data})
+    }
+
+    filter = (search = '', gotData = null) => {
+        const sortData = gotData ? gotData : this.state.data
+
+        if(search === '') {
+            return sortData
+        }
+
+        const retData = []
+        const regex = new RegExp(search, 'i')
+
+        for(const data of sortData) {
+            let add = false
+            for(const i in data) {
+                if((data[i] + '').search(regex) !== -1) {
+                    add = true
+                    break
+                }
+            }
+            if(add) {
+                retData.push(data)
+            }
+        }
+
+        return retData
     }
 
     handleSelectAllClick = (event, checked) => {
@@ -459,15 +484,26 @@ class TableView extends React.Component {
         return null
     }
 
+    escapeRegExp(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+    }
+
+    handleSearchChange = (value) => {
+        this.setState({search: this.escapeRegExp(value)})
+    }
+
     isSelected = id => this.state.selected.indexOf(id) !== -1;
 
     render() {
         const {classes, columns, title, onlyShow, showEdit, showAdd, uris, autoAddTitle, autoAddText} = this.props
-        const {data, order, orderBy, selected, rowsPerPage, page, popover} = this.state
+        const {data, order, orderBy, selected, rowsPerPage, page, popover, search} = this.state
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
         let extraColumns = 1
         showEdit && extraColumns++
         onlyShow && (extraColumns = 0)
+
+        let shownData = this.sort(order, orderBy, data);
+        shownData = this.filter(search, shownData)
 
         return (
             <Paper className={classes.root}>
@@ -476,6 +512,7 @@ class TableView extends React.Component {
                     title={title}
                     onDelete={this.handleDelete}
                     onRefresh={this.getData}
+                    onSearchChange={this.handleSearchChange}
                 />
                 <div className={classes.tableWrapper}>
                     <Table className={classes.table}>
@@ -488,9 +525,9 @@ class TableView extends React.Component {
                             onlyShow={onlyShow}
                             onRequestSort={this.handleRequestSort}
                             onSelectAllClick={this.handleSelectAllClick}
-                            rowCount={data.length}/>
+                            rowCount={shownData.length}/>
                         <TableBody>
-                            {data.length < 1 ? (
+                            {shownData.length < 1 ? (
                                     <TableRow>
                                         <TableCell colSpan={columns.length + extraColumns}>
                                             <div className={classes.center}>
@@ -499,7 +536,7 @@ class TableView extends React.Component {
                                         </TableCell>
                                     </TableRow>
                                 ) :
-                                data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
+                                shownData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
                                     const isSelected = this.isSelected(n.id)
                                     return (
                                         <TableRow
@@ -540,7 +577,7 @@ class TableView extends React.Component {
                                         </TableRow>
                                     )
                                 })}
-                            {(emptyRows > 0 && data.length > rowsPerPage) && (
+                            {(emptyRows > 0 && shownData.length > rowsPerPage) && (
                                 <TableRow style={{height: 49 * emptyRows}}>
                                     <TableCell colSpan={columns.length + extraColumns}/>
                                 </TableRow>
@@ -550,7 +587,7 @@ class TableView extends React.Component {
                 </div>
                 <TablePagination
                     component='div'
-                    count={data.length}
+                    count={shownData.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     backIconButtonProps={{
