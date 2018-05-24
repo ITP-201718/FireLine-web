@@ -8,7 +8,7 @@ import Typography from 'material-ui/Typography'
 import About from '../About/index'
 import LoginPopup from '../../components/LoginPopup/index'
 import {format} from 'date-fns'
-import EnhancedSelect from '../../components/EnhancedSelect'
+import EnhancedSelect from '../../components/EnhancedSelect/index'
 
 const styles = theme => ({
     root: {
