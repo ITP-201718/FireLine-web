@@ -18,6 +18,7 @@ import Fahrzeug from '../pages/fahrzeug'
 
 import Mitglied, {AddMitglied, EditMitglied} from '../pages/mitglied'
 import AddEinsatz from '../pages/add_einsatz'
+import AddFahrt from '../pages/add_fahrt'
 
 const routes = {
     path: '/',
