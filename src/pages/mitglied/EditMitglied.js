@@ -23,6 +23,7 @@ import FormElement from '../../components/FormElement/index'
 import {store} from '../../general/Redux';
 import {push} from 'react-router-redux'
 import {call, registerOnConnect, unregisterOnConnect, isConnected} from '../../general/Autobahn'
+import EnhancedSelect from '../../components/EnhancedSelect'
 
 const styles = theme => ({
     row: {
@@ -57,13 +58,12 @@ const actionConfig = {
         mail: '',
         first_name: '',
         last_name: '',
-        password: '',
-        password_confirm: '',
         sbuergerschaft: 'at',
         birthday: null,
         zugehoerigkeit: '',
         gender: '',
-        rang: '',
+        rank: [],
+        educations: [],
     },
     formaters: {
         birthday: (val) => {
@@ -92,10 +92,12 @@ class EditMitglied extends React.Component {
         const {id} = params
 
         if (isConnected()) {
-            const res = await call('member.get', [], {id})
-            const data = res.data[0]
+            const res = await call('member.get', [], {filter: {id}})
+            let data = res.data[0]
             delete data.password
             data.mail = data.mail ? data.mail : ''
+            data = {...actionConfig.defaultValues, ...data}
+            console.log('data', data)
             actionProp.setOption('defaultValues', data, true)
             actionProp.updateValue('id', data.id)
             delete this.onConnect
@@ -260,6 +262,7 @@ class EditMitglied extends React.Component {
                                     fullWidth
                                     margin='normal'
                                 >
+                                    <MenuItem value={'n'}>Keine</MenuItem>
                                     <MenuItem value={'a'}>Aktiv</MenuItem>
                                     <MenuItem value={'j'}>Jugend</MenuItem>
                                     <MenuItem value={'r'}>Reservist</MenuItem>
@@ -287,6 +290,25 @@ class EditMitglied extends React.Component {
 
                         <Grid item xs={12} md={6}>
                             <FormElement
+                                name={'educations'}
+                                actionProp={actionProp}
+                                onChangeFunc={(v) => v}
+                            >
+                                <EnhancedSelect
+                                    multi
+                                    uri='education.get'
+                                    nameId='name'
+                                    TextFieldProps={{
+                                        fullWidth: true,
+                                        label: 'Ausbildungen',
+                                        margin: 'normal',
+                                    }}
+                                />
+                            </FormElement>
+                        </Grid>
+
+                        {/*<Grid item xs={12} md={6}>
+                            <FormElement
                                 name='rank'
                                 actionProp={actionProp}
                             >
@@ -304,6 +326,25 @@ class EditMitglied extends React.Component {
                                     <MenuItem value={'olm'}>Oberlöschmeister</MenuItem>
                                     <MenuItem value={'hlm'}>Hauptlöschmeister</MenuItem>
                                 </TextField>
+                            </FormElement>
+                        </Grid>*/}
+
+                        <Grid item xs={12} md={6}>
+                            <FormElement
+                                name={'rank'}
+                                actionProp={actionProp}
+                                onChangeFunc={(v) => v}
+                                valueFunc={(v) => {return typeof v === 'object' ? v.id : v}}
+                            >
+                                <EnhancedSelect
+                                    uri='rank.get'
+                                    nameId='name'
+                                    TextFieldProps={{
+                                        fullWidth: true,
+                                        label: 'Rang',
+                                        margin: 'normal',
+                                    }}
+                                />
                             </FormElement>
                         </Grid>
 

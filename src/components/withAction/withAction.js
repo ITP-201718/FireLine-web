@@ -9,7 +9,7 @@ const withAction = (_options = {}) => Component => {
         constructor(props) {
             super(props)
             this.state = {
-                values: {},
+                values: options.defaultValues ? options.defaultValues : {},
                 errors: {},
             }
         }

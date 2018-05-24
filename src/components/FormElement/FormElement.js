@@ -5,10 +5,10 @@ class FormElement extends React.Component {
 
     render() {
         const {children, onChangeProp, onChangeFunc, valueProp, actionProp, name, showHelperText, helperTextProp,
-            showError, errorProp, useOnKeyUp, onKeyUpProp, childIsTextField} = this.props
+            showError, errorProp, useOnKeyUp, onKeyUpProp, childIsTextField, valueFunc} = this.props
 
         let props = {
-            [valueProp]: actionProp.getValue(name),
+            [valueProp]: valueFunc(actionProp.getValue(name)),
             [onChangeProp]: (...args) => {actionProp.updateValue(name, onChangeFunc(...args))},
         }
 
@@ -38,6 +38,7 @@ FormElement.propTypes = {
     onChangeProp: PropTypes.string,
     onChangeFunc: PropTypes.func,
     valueProp: PropTypes.string,
+    valueFunc: PropTypes.func,
     helperTextProp: PropTypes.string,
     showHelperText: PropTypes.bool,
     errorProp: PropTypes.string,
@@ -52,6 +53,7 @@ FormElement.defaultProps = {
     onChangeProp: 'onChange',
     onChangeFunc: (e) => {return e.target.value},
     valueProp: 'value',
+    valueFunc: (v) => v,
     showHelperText: true,
     helperTextProp: 'helperText',
     showError: true,
