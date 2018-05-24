@@ -27,7 +27,7 @@ class Rang extends React.Component {
                     }}
                     autoAdd
                     showAdd
-                    title='Ränge'
+                    title='Einsätze'
                 />
             </Container>
         )

@@ -18,7 +18,7 @@ const columnData = [
     {id: 'last_name', label: 'Nachname', type: 'text'},
     {id: 'mail', label: 'Email', type: 'mail'},
     {id: 'sbuergerschaft', label: 'Staatsbs', type: 'text', format: (v) => v.toUpperCase()},
-    {id: 'birthday', label: 'Geburtstag', type: 'date'},
+    {id: 'birthday', label: 'Geburtstag', type: 'date', date: {disableFuture: true}},
     {
         id: 'gender', label: 'Geschlecht', type: 'oneof',
         oneof: {o: 'Anderes', m: 'Männlich', w: 'Weiblich'}

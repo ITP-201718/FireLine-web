@@ -449,6 +449,7 @@ class TableView extends React.Component {
             }
         } else if (cType === 'date') {
             if (column.inlineEdit) {
+                const conf = column.date ? column.date : {}
                 return (
                     <div className={classes.lineHeight}>
                         <div className={classes.inLine}>{format(data, 'DD/MM/YYYY')}</div>
@@ -459,9 +460,8 @@ class TableView extends React.Component {
                             value={data}
                             format={'DD/MM/YYYY'}
                             keyboard
-                            clearable
                             emptyLabel={'0000-00-00'}
-                            disableFuture
+                            disableFuture={conf.disableFuture}
                             TextFieldComponent={(props) => {
                                 const onClick = props.InputProps.endAdornment.props.children.props.onClick
                                 return (
@@ -481,9 +481,10 @@ class TableView extends React.Component {
             }
         } else if (cType === 'datetime') {
             if (column.inlineEdit) {
+                const conf = column.datetime ? column.datetime : {}
                 return (
                     <div className={classes.lineHeight}>
-                        <div className={classes.inLine}>{format(data, 'DD/MM/YYYY')}</div>
+                        <div className={classes.inLine}>{format(data, 'DD/MM/YYYY hh:mm')}</div>
                         {<DateTimePicker
                             onChange={(newDate) => {
                                 this.handleDataUpdate(column, row, format(newDate, 'YYYY-MM-DD hh:mm:ss'))
@@ -491,9 +492,8 @@ class TableView extends React.Component {
                             value={data}
                             format={'DD/MM/YYYY hh:mm'}
                             keyboard
-                            clearable
                             emptyLabel={'0000-00-00'}
-                            disableFuture
+                            disableFuture={conf.disableFuture}
                             TextFieldComponent={(props) => {
                                 const onClick = props.InputProps.endAdornment.props.children.props.onClick
                                 return (
@@ -504,7 +504,6 @@ class TableView extends React.Component {
                                         </Icon>
                                     </IconButton>)
                             }}
-                            classes={{input: classes.inputFont}}
                         />}
                     </div>
                 )

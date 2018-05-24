@@ -25,7 +25,6 @@ class Rang extends React.Component {
     render() {
 
         return (
-            <Container>
                 <TableView
                     columns={columnData}
                     uris={{
@@ -38,7 +37,6 @@ class Rang extends React.Component {
                     showAdd
                     title='Fahrzeuge'
                 />
-            </Container>
         )
     }
 }
