@@ -18,7 +18,6 @@ import Fahrzeug from '../pages/fahrzeug'
 
 import Mitglied, {AddMitglied, EditMitglied} from '../pages/mitglied'
 import AddEinsatz from '../pages/add_einsatz'
-import AddFahrt from '../pages/add_fahrt'
 
 const routes = {
     path: '/',
@@ -44,7 +43,6 @@ const routes = {
         {path: 'einsatz', component: Einsatz},
         {path: 'geraetegrp', component: Geraetegrp},
         {path: 'fahrzeug', component: Fahrzeug},
-        {path: 'add_fahrt', component: AddFahrt},
         {path: ':pageName', component: Default},
     ]
 }

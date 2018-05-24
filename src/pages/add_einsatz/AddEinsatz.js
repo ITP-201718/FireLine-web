@@ -3,12 +3,10 @@
  */
 
 import React from 'react'
-import PropTypes from 'prop-types'
 import {withStyles} from 'material-ui/styles'
 import Grid from 'material-ui/Grid'
 import Container from '../../components/Container/Container'
 import Typography from 'material-ui/Typography'
-import classNames from 'classnames'
 import TextField from 'material-ui/TextField'
 import {InputLabel} from 'material-ui/Input'
 import {MenuItem} from 'material-ui/Menu'
