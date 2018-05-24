@@ -4,8 +4,11 @@ import Container from '../../components/Container/Container';
 
 const columnData = [
     {id: 'id', type: 'number', padding: false, label: 'ID', min: true},
-    {id: 'name', type: 'text', label: 'Name', inlineEdit: true},
-    {id: 'kname', type: 'text', label: 'Kurzform', inlineEdit: true},
+    {id: 'ort', type: 'text', label: 'Ort', inlineEdit: true},
+    {id: 'von', type: 'datetime', label: 'Startzeit', inlineEdit: true},
+    {id: 'bis', type: 'datetime', label: 'Endzeit', inlineEdit: true},
+    {id: 'estufe', type: 'text', label: 'Einsatzstufe', inlineEdit: true},
+    {id: 'beschreibung', type: 'datetime', label: 'Beschreibung', inlineEdit: true},
 ];
 
 class Rang extends React.Component {
@@ -17,10 +20,10 @@ class Rang extends React.Component {
                 <TableView
                     columns={columnData}
                     uris={{
-                        get: 'rank.get',
-                        delete: 'rank.delete',
-                        update: 'rank.update',
-                        create: 'rank.create',
+                        get: 'mission.get',
+                        delete: 'mission.delete',
+                        update: 'mission.update',
+                        create: 'mission.create',
                     }}
                     autoAdd
                     showAdd

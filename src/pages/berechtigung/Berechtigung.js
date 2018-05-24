@@ -5,7 +5,7 @@ import Container from '../../components/Container/Container';
 const columnData = [
     {id: 'id', type: 'number', padding: false, label: 'ID', min: true},
     {id: 'name', type: 'text', label: 'Name', inlineEdit: true},
-    {id: 'kname', type: 'text', label: 'Kurzform', inlineEdit: true},
+    {id: 'uri', type: 'text', label: 'URI', inlineEdit: true},
 ];
 
 class Rang extends React.Component {
@@ -17,14 +17,14 @@ class Rang extends React.Component {
                 <TableView
                     columns={columnData}
                     uris={{
-                        get: 'rank.get',
-                        delete: 'rank.delete',
-                        update: 'rank.update',
-                        create: 'rank.create',
+                        get: 'permission.get',
+                        delete: 'permission.delete',
+                        update: 'permission.update',
+                        create: 'permission.create',
                     }}
                     autoAdd
                     showAdd
-                    title='Ränge'
+                    title='Berechtigungen'
                 />
             </Container>
         )

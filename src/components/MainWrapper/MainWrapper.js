@@ -124,6 +124,13 @@ class MainWrapper extends React.Component {
                         <ListItem button onClick={this.drawerPush('/ausbildung')}><ListItemText primary='Ausbildungen'/></ListItem>
                         <ListItem button onClick={this.drawerPush('/rang')}><ListItemText primary='Ränge'/></ListItem>
                         <ListItem button onClick={this.drawerPush('/mitglied')}><ListItemText primary='Mitglieder'/></ListItem>
+                        <ListItem button onClick={this.drawerPush('/aktivitaet')}><ListItemText primary='Aktivitäten'/></ListItem>
+                        <ListItem button onClick={this.drawerPush('/berechtigung')}><ListItemText primary='Berechtigungen'/></ListItem>
+                        <ListItem button onClick={this.drawerPush('/freigabe')}><ListItemText primary='Freigaben'/></ListItem>
+                        <ListItem button onClick={this.drawerPush('/zbereich')}><ListItemText primary='Zuständigkeitsbereiche'/></ListItem>
+                        <ListItem button onClick={this.drawerPush('/einsatz')}><ListItemText primary='Einsätze'/></ListItem>
+                        <ListItem button onClick={this.drawerPush('/geraetegrp')}><ListItemText primary='Gerätegruppen'/></ListItem>
+                        <ListItem button onClick={this.drawerPush('/fahrzeug')}><ListItemText primary='Fahrzeuge'/></ListItem>
                     </List>
                     <Divider/>
                 </div>

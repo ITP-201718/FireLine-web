@@ -21,6 +21,7 @@ import Select from 'material-ui/Select'
 import {MenuItem} from 'material-ui/Menu'
 import {format} from 'date-fns'
 import DatePicker from 'material-ui-pickers/DatePicker'
+import DateTimePicker from 'material-ui-pickers/DateTimePicker'
 import Input from 'material-ui/Input'
 import Avatar from 'material-ui/Avatar'
 import ClassNames from 'classnames'
@@ -477,6 +478,38 @@ class TableView extends React.Component {
                 )
             } else {
                 return format(data, 'DD/MM/YYYY')
+            }
+        } else if (cType === 'datetime') {
+            if (column.inlineEdit) {
+                return (
+                    <div className={classes.lineHeight}>
+                        <div className={classes.inLine}>{format(data, 'DD/MM/YYYY')}</div>
+                        {<DateTimePicker
+                            onChange={(newDate) => {
+                                this.handleDataUpdate(column, row, format(newDate, 'YYYY-MM-DD hh:mm:ss'))
+                            }}
+                            value={data}
+                            format={'DD/MM/YYYY hh:mm'}
+                            keyboard
+                            clearable
+                            emptyLabel={'0000-00-00'}
+                            disableFuture
+                            TextFieldComponent={(props) => {
+                                const onClick = props.InputProps.endAdornment.props.children.props.onClick
+                                return (
+                                    <IconButton onClick={onClick}
+                                                className={ClassNames(classes.inLine, classes.floatRight)}>
+                                        <Icon>
+                                            event
+                                        </Icon>
+                                    </IconButton>)
+                            }}
+                            classes={{input: classes.inputFont}}
+                        />}
+                    </div>
+                )
+            } else {
+                return format(data, 'DD/MM/YYYY hh:mm')
             }
         } else if (cType === 'img') {
             return <Avatar src={data}/>

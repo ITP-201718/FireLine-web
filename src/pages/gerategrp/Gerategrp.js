@@ -5,7 +5,6 @@ import Container from '../../components/Container/Container';
 const columnData = [
     {id: 'id', type: 'number', padding: false, label: 'ID', min: true},
     {id: 'name', type: 'text', label: 'Name', inlineEdit: true},
-    {id: 'kname', type: 'text', label: 'Kurzform', inlineEdit: true},
 ];
 
 class Rang extends React.Component {
@@ -17,14 +16,14 @@ class Rang extends React.Component {
                 <TableView
                     columns={columnData}
                     uris={{
-                        get: 'rank.get',
-                        delete: 'rank.delete',
-                        update: 'rank.update',
-                        create: 'rank.create',
+                        get: 'devicegroup.get',
+                        delete: 'devicegroup.delete',
+                        update: 'devicegroup.update',
+                        create: 'devicegroup.create',
                     }}
                     autoAdd
                     showAdd
-                    title='Ränge'
+                    title='Gerätegruppen'
                 />
             </Container>
         )

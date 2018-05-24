@@ -9,6 +9,13 @@ import {Router, browserHistory} from 'react-router';
 import AddUser from '../pages/add_user'
 import Ausbildung from '../pages/ausbildung'
 import Rang from '../pages/rang'
+import Aktivitaet from '../pages/aktivitaet'
+import Berechtigung from '../pages/berechtigung'
+import Freigabe from '../pages/freigabe'
+import Zbereich from '../pages/zbereich'
+import Einsatz from '../pages/einsatz'
+import Geraetegrp from '../pages/gerategrp'
+import Fahrzeug from '../pages/fahrzeug'
 
 import Mitglied, {AddMitglied, EditMitglied} from '../pages/mitglied'
 
@@ -29,6 +36,13 @@ const routes = {
             ],
         },
         {path: 'rang', component: Rang},
+        {path: 'aktivitaet', component: Aktivitaet},
+        {path: 'berechtigung', component: Berechtigung},
+        {path: 'freigabe', component: Freigabe},
+        {path: 'zbereich', component: Zbereich},
+        {path: 'einsatz', component: Einsatz},
+        {path: 'geraetegrp', component: Geraetegrp},
+        {path: 'fahrzeug', component: Fahrzeug},
         {path: ':pageName', component: Default},
     ]
 }
