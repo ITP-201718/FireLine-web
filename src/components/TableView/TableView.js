@@ -203,7 +203,7 @@ class TableView extends React.Component {
                 newData[i].update = false
             }
         }
-        this.setState({data: undefined, undefined, newData})
+        this.setState({data: newData})
     }
 
     getColumnById = (id) => {
@@ -233,8 +233,6 @@ class TableView extends React.Component {
             return
         }
 
-        console.log(res.data)
-
         this.setState({
             data: res.data
         })
@@ -252,38 +250,39 @@ class TableView extends React.Component {
     }
 
     sort = (order = this.state.order, orderBy = this.state.orderBy, gotData = null) => {
-        const sortData = gotData ? gotData : this.state.data
-
-        const data =
-            order === 'desc'
-                ? sortData.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
-                : sortData.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1))
-
-        if (gotData) {
-            return data
+        let sortData = gotData ? gotData : this.state.data
+        if (!Array.isArray(sortData)) {
+            sortData = []
         }
-        this.setState({data})
+
+        return order === 'desc'
+            ? sortData.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
+            : sortData.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1))
+
     }
 
     filter = (search = '', gotData = null) => {
-        const sortData = gotData ? gotData : this.state.data
+        let sortData = gotData ? gotData : this.state.data
+        if (!Array.isArray(sortData)) {
+            sortData = []
+        }
 
-        if(search === '') {
+        if (search === '') {
             return sortData
         }
 
-        const retData = []
+        let retData = []
         const regex = new RegExp(search, 'i')
 
-        for(const data of sortData) {
+        for (const data of sortData) {
             let add = false
-            for(const i in data) {
-                if((data[i] + '').search(regex) !== -1) {
+            for (const i in data) {
+                if ((data[i] + '').search(regex) !== -1) {
                     add = true
                     break
                 }
             }
-            if(add) {
+            if (add) {
                 retData.push(data)
             }
         }
@@ -349,6 +348,7 @@ class TableView extends React.Component {
 
     handleEdit = (event, id) => {
         event.stopPropagation()
+        this.props.onEdit(id)
     }
 
     handleInlineChange = (event, column, row) => {
@@ -464,7 +464,8 @@ class TableView extends React.Component {
                             TextFieldComponent={(props) => {
                                 const onClick = props.InputProps.endAdornment.props.children.props.onClick
                                 return (
-                                    <IconButton onClick={onClick} className={ClassNames(classes.inLine, classes.floatRight)}>
+                                    <IconButton onClick={onClick}
+                                                className={ClassNames(classes.inLine, classes.floatRight)}>
                                         <Icon>
                                             event
                                         </Icon>
@@ -497,13 +498,19 @@ class TableView extends React.Component {
     render() {
         const {classes, columns, title, onlyShow, showEdit, showAdd, uris, autoAddTitle, autoAddText} = this.props
         const {data, order, orderBy, selected, rowsPerPage, page, popover, search} = this.state
-        const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
+
+        let shownData = [...data]
+        if (!Array.isArray(shownData)) {
+            shownData = []
+        }
+
+        shownData = this.sort(order, orderBy, data)
+        shownData = this.filter(search, shownData)
+
+        const emptyRows = rowsPerPage - Math.min(rowsPerPage, shownData.length - page * rowsPerPage)
         let extraColumns = 1
         showEdit && extraColumns++
         onlyShow && (extraColumns = 0)
-
-        let shownData = this.sort(order, orderBy, data);
-        shownData = this.filter(search, shownData)
 
         return (
             <Paper className={classes.root}>
@@ -667,6 +674,7 @@ TableView.propTypes = {
     showAdd: PropTypes.bool,
     onAdd: PropTypes.func,
     showEdit: PropTypes.bool,
+    onEdit: PropTypes.func,
     sortAtMount: PropTypes.bool,
     autoAdd: PropTypes.bool,
     autoAddTitle: PropTypes.string,
@@ -679,6 +687,8 @@ TableView.defaultProps = {
     onAdd: () => {
     },
     showEdit: false,
+    onEdit: () => {
+    },
     autoAdd: false,
     autoAddTitle: 'Neues erstellen'
 }

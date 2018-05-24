@@ -8,6 +8,7 @@ import Typography from 'material-ui/Typography'
 import About from '../About/index'
 import LoginPopup from '../../components/LoginPopup/index'
 import {format} from 'date-fns'
+import EnhancedSelect from '../../components/EnhancedSelect'
 
 const styles = theme => ({
     root: {
@@ -63,6 +64,7 @@ class Main extends React.Component {
                     </Grid>
                 </Grid>
                 <LoginPopup/>
+                <EnhancedSelect multi={false} open={false} />
             </div>
         )
     }

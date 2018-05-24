@@ -7,10 +7,10 @@ import {store} from './Redux';
 import {syncHistoryWithStore} from 'react-router-redux';
 import {Router, browserHistory} from 'react-router';
 import AddUser from '../pages/add_user'
-import AddMitglied from '../pages/add_mitglied'
 import Ausbildung from '../pages/ausbildung'
 import Rang from '../pages/rang'
-import Mitglied from '../pages/mitglied'
+
+import Mitglied, {AddMitglied, EditMitglied} from '../pages/mitglied'
 
 const routes = {
     path: '/',
@@ -24,7 +24,8 @@ const routes = {
             path: 'mitglied',
             indexRoute: {component: Mitglied},
             childRoutes: [
-                {path: 'add', component: AddMitglied}
+                {path: 'add', component: AddMitglied},
+                {path: 'edit/:id', component: EditMitglied},
             ],
         },
         {path: 'rang', component: Rang},

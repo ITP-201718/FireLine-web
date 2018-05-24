@@ -25,9 +25,6 @@ class Ausbildung extends React.Component {
                     sortAtMount
                     autoAdd
                     showAdd
-                    onAdd={() => {
-                        console.log('add')
-                    }}
                 />
             </Container>
         )

@@ -28,7 +28,7 @@ const columnData = [
 class Mitglied extends React.Component {
 
     render() {
-        const {onAdd} = this.props
+        const {onAdd, onEdit} = this.props
 
         return (
             <TableView
@@ -39,6 +39,8 @@ class Mitglied extends React.Component {
                     update: 'member.update',
                     create: 'member.create',
                 }}
+                showEdit
+                onEdit={onEdit}
                 title='Mitglieder'
                 showAdd
                 onAdd={onAdd}
@@ -50,6 +52,7 @@ class Mitglied extends React.Component {
 
 Mitglied.propTypes = {
     onAdd: PropTypes.func.isRequired,
+    onEdit: PropTypes.func.isRequired,
 }
 
 export default Mitglied

@@ -15,10 +15,10 @@ import Button from 'material-ui/Button'
 import Icon from 'material-ui/Icon'
 import {MenuItem} from 'material-ui/Menu'
 import {DatePicker} from 'material-ui-pickers'
-import withAction from '../../components/withAction'
+import withAction from '../../components/withAction/index'
 import {format} from 'date-fns'
 import md5 from 'md5'
-import FormElement from '../../components/FormElement'
+import FormElement from '../../components/FormElement/index'
 import {store} from '../../general/Redux';
 import {push} from 'react-router-redux'
 
@@ -82,7 +82,7 @@ class AddMitglied extends React.Component {
                     <div className={classes.row}>
                         <Avatar
                             alt="Blank"
-                            src={getValue('mail') === '' ? '/img/default_user.png' : 'https://www.gravatar.com/avatar/' + md5(getValue('mail')) + '?d=identicon&s=128'}
+                            src={(getValue('mail') === '' || getValue('mail') === null) ? '/img/default_user.png' : 'https://www.gravatar.com/avatar/' + md5(getValue('mail')) + '?d=identicon&s=128'}
                             className={classNames(classes.avatar, classes.bigAvatar)}
                         />
                     </div>
