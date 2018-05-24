@@ -64,7 +64,15 @@ class Main extends React.Component {
                     </Grid>
                 </Grid>
                 <LoginPopup/>
-                <EnhancedSelect multi={false} open={false} />
+                <EnhancedSelect
+                    uri='rank.get'
+                    nameId='name'
+                    multi={false}
+                    open={true}
+                    selected={'1'}
+                    onChange={(val) => {console.log('change', val)}}
+                    onClose={() => {console.log('close')}}
+                />
             </div>
         )
     }

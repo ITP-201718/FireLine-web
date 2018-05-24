@@ -82,7 +82,7 @@ class EditMitglied extends React.Component {
     }
 
     componentWillUnmount() {
-        if(this.onConnect) {
+        if (this.onConnect) {
             unregisterOnConnect(this.onConnect)
         }
     }
@@ -91,7 +91,7 @@ class EditMitglied extends React.Component {
         const {params, actionProp} = this.props
         const {id} = params
 
-        if(isConnected()) {
+        if (isConnected()) {
             const res = await call('member.get', [], {id})
             const data = res.data[0]
             delete data.password
@@ -112,7 +112,9 @@ class EditMitglied extends React.Component {
             <div className={classes.root}>
                 <Container>
                     <Typography variant='display1'>
-                        <IconButton onClick={() => {store.dispatch(push('/mitglied'))}}>
+                        <IconButton onClick={() => {
+                            store.dispatch(push('/mitglied'))
+                        }}>
                             <Icon className={classes.bigIcon}>keyboard_arrow_left</Icon>
                         </IconButton>
                         Mitglied editieren</Typography>
@@ -217,6 +219,7 @@ class EditMitglied extends React.Component {
                                     label='Staatsbürgerschaft'
                                     margin='normal'
                                 >
+                                    <MenuItem value={'keine'}>Keine</MenuItem>
                                     <MenuItem value={'at'}>Österreich</MenuItem>
                                     <MenuItem value={'de'}>Deutschland</MenuItem>
                                     <MenuItem value={'it'}>Italien</MenuItem>

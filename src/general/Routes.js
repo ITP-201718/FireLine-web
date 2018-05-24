@@ -6,7 +6,6 @@ import Default from '../components/route_test/Default';
 import {store} from './Redux';
 import {syncHistoryWithStore} from 'react-router-redux';
 import {Router, browserHistory} from 'react-router';
-import AddUser from '../pages/add_user'
 import Ausbildung from '../pages/ausbildung'
 import Rang from '../pages/rang'
 import Aktivitaet from '../pages/aktivitaet'
@@ -25,7 +24,6 @@ const routes = {
     indexRoute: {component: Main},
     childRoutes: [
         {path: 'profile', component: Profile},
-        {path: 'add_user', component: AddUser},
         {path: 'ausbildung', component: Ausbildung},
         {
             path: 'mitglied',

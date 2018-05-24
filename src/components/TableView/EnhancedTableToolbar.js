@@ -68,8 +68,6 @@ class EnhancedTableToolbar extends React.Component {
                                     <Icon>search</Icon>
                                 </InputAdornment>)
                         }}
-
-                        //label='Search'
                     />
                 </div>
                 <div className={classes.action}>

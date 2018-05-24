@@ -18,6 +18,7 @@ import {DatePicker} from 'material-ui-pickers'
 import withAction from '../../components/withAction/index'
 import {format} from 'date-fns'
 import md5 from 'md5'
+import IconButton from 'material-ui/IconButton'
 import FormElement from '../../components/FormElement/index'
 import {store} from '../../general/Redux';
 import {push} from 'react-router-redux'
@@ -37,6 +38,9 @@ const styles = theme => ({
     },
     rightIcon: {
         marginLeft: theme.spacing.unit,
+    },
+    bigIcon: {
+        fontSize: 40,
     },
 })
 
@@ -78,7 +82,13 @@ class AddMitglied extends React.Component {
         return (
             <div className={classes.root}>
                 <Container>
-                    <Typography variant='display1'>Mitglied hinzufügen</Typography>
+                    <Typography variant='display1'>
+                        <IconButton onClick={() => {
+                            store.dispatch(push('/mitglied'))
+                        }}>
+                            <Icon className={classes.bigIcon}>keyboard_arrow_left</Icon>
+                        </IconButton>
+                        Mitglied hinzufügen</Typography>
                     <div className={classes.row}>
                         <Avatar
                             alt="Blank"
@@ -180,6 +190,7 @@ class AddMitglied extends React.Component {
                                     label='Staatsbürgerschaft'
                                     margin='normal'
                                 >
+                                    <MenuItem value={'keine'}>Keine</MenuItem>
                                     <MenuItem value={'at'}>Österreich</MenuItem>
                                     <MenuItem value={'de'}>Deutschland</MenuItem>
                                     <MenuItem value={'it'}>Italien</MenuItem>
@@ -246,25 +257,25 @@ class AddMitglied extends React.Component {
                         </Grid>
 
                         <Grid item xs={12} md={6}>
-                                <FormElement
-                                    name='rank'
-                                    actionProp={actionProp}
+                            <FormElement
+                                name='rank'
+                                actionProp={actionProp}
+                            >
+                                <TextField
+                                    select
+                                    label='Rang'
+                                    fullWidth
+                                    margin='normal'
                                 >
-                                    <TextField
-                                        select
-                                        label='Rang'
-                                        fullWidth
-                                        margin='normal'
-                                    >
-                                        <MenuItem value={'pfm'}>Probefeuerwehrmann</MenuItem>
-                                        <MenuItem value={'fm'}>Feuerwehrmann</MenuItem>
-                                        <MenuItem value={'ofm'}>Oberfeuerwehrmann</MenuItem>
-                                        <MenuItem value={'hfm'}>Hauptfeuerwehrmann</MenuItem>
-                                        <MenuItem value={'lm'}>Löschmeister</MenuItem>
-                                        <MenuItem value={'olm'}>Oberlöschmeister</MenuItem>
-                                        <MenuItem value={'hlm'}>Hauptlöschmeister</MenuItem>
-                                    </TextField>
-                                </FormElement>
+                                    <MenuItem value={'pfm'}>Probefeuerwehrmann</MenuItem>
+                                    <MenuItem value={'fm'}>Feuerwehrmann</MenuItem>
+                                    <MenuItem value={'ofm'}>Oberfeuerwehrmann</MenuItem>
+                                    <MenuItem value={'hfm'}>Hauptfeuerwehrmann</MenuItem>
+                                    <MenuItem value={'lm'}>Löschmeister</MenuItem>
+                                    <MenuItem value={'olm'}>Oberlöschmeister</MenuItem>
+                                    <MenuItem value={'hlm'}>Hauptlöschmeister</MenuItem>
+                                </TextField>
+                            </FormElement>
                         </Grid>
 
                         <Grid item xs={12}>
