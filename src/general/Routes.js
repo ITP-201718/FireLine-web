@@ -11,6 +11,7 @@ import AddMitglied from '../pages/add_mitglied'
 import Ausbildung from '../pages/ausbildung'
 import Rang from '../pages/rang'
 import AddEinsatz from '../pages/add_einsatz'
+import AddFahrt from '../pages/add_fahrt'
 
 const routes = {
     path: '/',
