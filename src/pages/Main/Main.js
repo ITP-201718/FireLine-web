@@ -35,7 +35,7 @@ class Main extends React.Component {
                 {label: 'Arbeit', id: 'work'},
             ],
             tour: [
-                {label: 'Datum', id: 'date'},
+                {label: 'Datum', id: 'date', format: (val) => {return format(val, 'DD/MM/YYYY')}},
                 {label: 'Kilometerstand', id: 'km_ende', numeric: true,
                     format: (val) => {return val.toLocaleString() + ' km'}},
                 {label: 'Fahrer', id: 'mid'},
